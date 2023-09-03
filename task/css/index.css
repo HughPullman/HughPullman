@@ -1,0 +1,24 @@
+.apis{
+    display: flex;
+}
+
+.col{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 10px;
+}
+
+.row{
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 10px;
+}
+
+.results{
+    margin-top: 20px
+}

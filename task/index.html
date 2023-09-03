@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="css/index.css">
+<html>
+
+    <head>
+        <title>Moving from theory to practice Tasks</title>       
+    </head>
+
+    <body>
+        <div class="apis">
+            <div class="col">
+                <div class="row">
+                    API name
+                </div>
+                <div class="row">
+                    1. Recent Earthquakes
+                </div>
+                <div class="row">
+                    2. Name of Ocean or Sea
+                </div>
+                <div class="row">
+                    3. Weather from nearest station
+                </div>
+            </div>
+            <div class="col">
+                <div class="row">
+                    API description
+                </div>
+                <div class="row">
+                    <span>Find recent Earthquakes nearby.</span>
+                    <input type="number" placeholder="North" id="inputNorth"/>
+                    <input type="number" placeholder="South" id="inputSouth"/>
+                    <input type="number" placeholder="East" id="inputEast"/>
+                    <input type="number" placeholder="West" id="inputWest"/>
+                </div>
+                <div class="row">
+                    <span>Find the name of the ocean or sea.</span>
+                    <input type="number" placeholder="Latitude" id="inputLatitude">
+                    <input type="number" placeholder="Longitude" id="inputLongitude">
+                </div>
+                <div class="row">
+                    <span>Find recent Weather nearby.</span>
+                    <input type="number" placeholder="North" id="inputNorthW"/>
+                    <input type="number" placeholder="South" id="inputSouthW"/>
+                    <input type="number" placeholder="East" id="inputEastW"/>
+                    <input type="number" placeholder="West" id="inputWestW"/>
+                </div>
+            </div>
+            <div class="col">
+                <div class="row">
+    
+                </div>
+                <div class="row">
+                    <button id="submitEarthquakeInfo">Submit</button>
+                </div>
+                <div class="row">
+                    <button id="submitOceanInfo">Submit</button>
+                </div>
+                <div class="row">
+                    <button id="submitWeatherInfo">Submit</button>
+                </div>
+            </div>
+        </div>
+        <div class="results">
+            <span>DateTime:</span><div id="#txtDateTime"></div><br>
+            <span>Depth:</span><div id="#txtDepth"></div><br>
+            <span>Longitude:</span><div id="#txtLng"></div><br>
+            <span>Latitude:</span><div id="#txtLat"></div><br>
+            <span>Magnitude:</span><div id="#txtMagnitude"></div><br>
+            <span>Ocean:</span><div id="txtOcean"></div><br>
+            <span>Windspeed:</span><div id="txtWindSpeed"></div><br>
+            <span>Temperature:</span><div id="txtTemperature"></div><br>
+            <span>Humidity:</span><div id="txtHumidity"></div><br>
+            <span>Station Name:</span><div id="txtStationName"></div><br>
+        </div>
+
+        <script type="application/javascript" src="js/jquery-2.2.3.min.js"></script>
+		<script type="application/javascript" src="js/script.js"></script>
+
+    </body>
+</html>
+
