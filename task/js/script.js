@@ -50,7 +50,7 @@ $('#submitOceanInfo').click(function() {
     });
 });
 
-$('#submitWeatherInfo').clikc(function() {
+$('#submitWeatherInfo').click(function() {
 
     $.ajax({
         url: "task/php/getWeatherInfo.php",
