@@ -5,7 +5,7 @@
 
     $executionStartTime = microtime(true);
 
-    $url = 'http://api.geonames.org/oceanJSON?' . 'lat=' . $_REQUEST['lat'] . '&lng=' . $_REQUEST['lng'] .  '&username=oceanReq';
+    $url = 'http://api.geonames.org/oceanJSON?' . 'lat=' . $_REQUEST['lat'] . '&lng=' . $_REQUEST['lng'] .  '&username=hughpullman';
 
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -23,6 +23,7 @@
 	$output['status']['description'] = "success";
 	$output['status']['returnedIn'] = intval((microtime(true) - $executionStartTime) * 1000) . " ms";
 	$output['data'] = $decode['ocean'];
+    
 
     header('Content-Type: application/json; charset=UTF-8');
 

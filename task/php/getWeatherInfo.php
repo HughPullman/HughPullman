@@ -5,7 +5,7 @@
 
     $executionStartTime = microtime(true);
 
-    $url = 'http://api.geonames.org/weatherJSON?' . 'north=' . $_REQUEST['north'] . '&south=' . $_REQUEST['south'] . '&east = ' . $_REQUEST['east'] . '&west = ' . $_REQUEST['west'] . '&username=weatherReq';
+    $url = 'http://api.geonames.org/weatherJSON?' . 'north=' . $_REQUEST['north'] . '&south=' . $_REQUEST['south'] . '&east=' . $_REQUEST['east'] . '&west=' . $_REQUEST['west'] . '&username=hughpullman';
 
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);

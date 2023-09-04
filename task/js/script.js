@@ -15,12 +15,12 @@ $('#submitEarthquakeInfo').click(function() {
             console.log(JSON.stringify(result));
 
             if(result.status.name == "ok") {
-
-                $('#txtDateTime').html(result['data'][0]['datetime'])
-                $('#txtDepth').html(result['data'][0]['depth'])
-                $('#txtLng').html(result['data'][0]['lng'])
-                $('#txtLat').html(result['data'][0]['lat'])
-                $('#txtMagnitude').html(result['data'][0]['magnitude'])
+                console.log(result.data[0]);
+                $('#txtDateTime').html(result.data[0].datetime);
+                $('#txtDepth').html(result.data[0].depth);
+                $('#txtLng').html(result.data[0].lng);
+                $('#txtLat').html(result.data[0].lat);
+                $('#txtMagnitude').html(result.data[0].magnitude);
             }
         },
         error: function(jqXHR, textStatus, errorThrown){
@@ -44,7 +44,7 @@ $('#submitOceanInfo').click(function() {
 
             if(result.status.name == "ok"){
 
-                $('#txtOcean').html(result['data'][0]['name'])
+                $('#txtOcean').html(result.data.name);
             }
         }
     });
@@ -68,12 +68,12 @@ $('#submitWeatherInfo').click(function() {
 
             if(result.status.name == "ok") {
 
-                $('#txtTemperature').html(result['data'][0]['temperature'])
-                $('#txtHumidity').html(result['data'][0]['humidity'])
-                $('#txtLng').html(result['data'][0]['lng'])
-                $('#txtLat').html(result['data'][0]['lat'])
-                $('#txtWindSpeed').html(result['data'][0]['windSpeed'])
-                $('#txtStationName').html(result['data'][0]['stationName'])
+                $('#txtTemperature').html(result.data[0].temperature);
+                $('#txtHumidity').html(result.data[0].humidity);
+                $('#txtLng').html(result.data[0].lng);
+                $('#txtLat').html(result.data[0].lat);
+                $('#txtWindSpeed').html(result.data[0].windSpeed);
+                $('#txtStationName').html(result.data[0].stationName);
             }
         },
         error: function(jqXHR, textStatus, errorThrown){
