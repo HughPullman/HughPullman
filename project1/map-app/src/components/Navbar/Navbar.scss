@@ -1,0 +1,79 @@
+.navbar{
+    height: 80px;
+    background-color: #0B0C10;
+    color: white;
+    width: 100%;
+    z-index: 5;
+
+    .wrapper{
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .left{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            
+
+            span{
+                font-size: 32px;
+                font-weight: 500;
+            }
+        }
+        .center{
+            .home{
+                font-size: 20px;
+                font-weight: 300;
+                cursor: pointer;
+                position: relative;
+            }
+            span::after{
+                content: '';
+                width: 0;
+                height: 3px;
+                background-color: #5CDB95;
+                position: absolute;
+                left: 0;
+                bottom: -6px;
+                transition: 0.5s;
+            }
+            span:hover::after{
+                width: 100%;
+            }
+        }
+
+        .right{
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            
+            h3{
+                font-size: 22px;
+                font-weight: 500;
+            }
+            span{
+                font-size: 20px;
+                font-weight: 300;
+                cursor: pointer;
+                position: relative;
+            }
+        }
+
+        .right span::after{
+            content: '';
+            width: 0;
+            height: 3px;
+            background-color: #5CDB95;
+            position: absolute;
+            left: 0;
+            bottom: -6px;
+            transition: 0.5s;
+        }
+        .right span:hover::after{
+            width: 100%;
+        }
+    }
+}

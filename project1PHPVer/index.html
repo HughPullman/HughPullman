@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="css/index.css">
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Map App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit&family=Prompt&family=Roboto:wght@100;300;500;700;900&family=Space+Mono&display=swap" rel="stylesheet">
+    <meta name="description" content="Map Application Code Academy">
+    <meta name="author" content="Hugh Pullman">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+</head>
+
+<body>
+    <!-------------------Navbar-------------------->
+    <div class="navbar">
+        <div class="wrapper">
+            <div class="leftNav">
+                <span>Hugh's Map App</span>
+            </div>
+            <div class="centerNav">
+                <span class="home" onclick="myLocation()">My Location</span>
+            </div>
+            <div class="rightNav">
+                <div class="dropdownCont">
+                    <button onclick="dropdownFunc()" class="dropbtn">Select Country</button>
+                    <div id="dropdown" class="dropdown-content">
+                        <a href="#" onclick="getCountryInfo('GB');getWikiInfo('UnitedKingdom');getWeather('GB')">United Kingdom</a>
+                        <a href="#" onclick="getCountryInfo('FR');getWikiInfo('France');getWeather('FR')">France</a>
+                        <a href="#" onclick="getCountryInfo('IT');getWikiInfo('Italy');getWeather('IT')">Italy</a>
+                        <a href="#" onclick="getCountryInfo('ES');getWikiInfo('Spain');getWeather('ES')">Spain</a>
+                        <a href="#" onclick="getCountryInfo('DE');getWikiInfo('Germany');getWeather('DE')">Germany</a>
+                        <a href="#" onclick="getCountryInfo('TH');getWikiInfo('Thailand');getWeather('TH')">Thailand</a>
+                        <a href="#" onclick="getCountryInfo('IN');getWikiInfo('India');getWeather('IN')">India</a>
+                        <a href="#" onclick="getCountryInfo('US');getWikiInfo('UnitedStatesofAmerica');getWeather('US')">USA</a>
+                        <a href="#" onclick="getCountryInfo('CN');getWikiInfo('China');getWeather('CN')">China</a>
+                        <a href="#" onclick="getCountryInfo('JP');getWikiInfo('Japan');getWeather('JP')">Japan</a>
+                        <a href="#" onclick="getCountryInfo('AU');getWikiInfo('Australia');getWeather('AU')">Australia</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-------------------Homepage-------------------->
+
+    <div class="home">
+        <div class="infoDropdown">
+            <button class="infobtn" onclick="toggleInfo()">Country Info</button>
+        </div>
+        <div class="info" id="info">
+            <div class="leftHome">
+                <h1>Country Information</h1>
+                <p class="infotitle">Latitude<p id="lat"></p></p>
+                <p class="infotitle">Longitude<p id="lng"></p></p>
+                <p class="infotitle">Country<p id="country"></p></p>
+                <p class="infotitle">Capital City<p id="capital"></p></p>
+                <p class="infotitle">Continent <p id="continent"></p></p>
+                <p class="infotitle">Currency <p id="currency"></p></p>
+                <p class="infotitle">Area:<p id="area"></p></p>
+                <p class="infotitle">Population<p id="population"></p></p>
+            </div>
+            
+        </div>
+        <div class="weatherDropdown">
+            <button class="weatherbtn" onclick="toggleWeather()">Weather</button>
+        </div>
+        <div class="weather" id="weather">
+            <div class="rightHome">
+                <h1>Weather</h1>
+                <p class="infotitle">Temperature</p><p id="temp"></p>
+                <p class="infotitle">Pressure</p><p id="pressure"></p>
+                <p class="infotitle">Humidity</p><p id="humidity"></p>
+                <p class="infotitle">Wind Speed</p><p id="windSpeed"></p>
+                <p class="infotitle">Condition</p><p id="condition"></p>
+            </div>
+        </div>
+        <div id="map">
+
+        </div>
+        <div class="wikiDropdown">
+            <button class="wikibtn" onclick="toggleWiki()">Wikipedia Links</button>
+        </div>
+        <div class="wiki" id="wiki">
+            <div class="title"><h2>Related Wikipedia</h2></div>
+            <div class="wikiLinks">
+                <a id="wiki1" target="_blank"></a>
+                <a id="wiki2" target="_blank"></a>
+                <a id="wiki3" target="_blank"></a>
+                <a id="wiki4" target="_blank"></a>
+                <a id="wiki5" target="_blank"></a>
+            </div>
+        </div>
+        <div class="exchangeRatesDropdown">
+            <button class="exchangebtn" onclick="toggleExchange()">Exchange Rate</button>
+        </div>
+        <div class="exchangeRate" id="exchangeRate">
+            <h2>Exchange Rate</h2>
+            <p>USD = </p>
+            <p>1</p>
+            <br>
+            <p id="currencyExch"></p>
+            <p id="exchange"></p>
+        </div>
+        <div class="flagDropdown">
+            <button class="flagbtn" onclick="toggleFlag()">Country Flag</button>
+        </div>
+        <div class="flag" id="flag">
+            <img src="https://flagsapi.com/BE/flat/64.png" alt="" id="flagimg">
+        </div>
+    </div>
+    <script type="application/javascript" src="js/jquery-2.2.3.min.js"></script>
+	<script type="application/javascript" src="js/script.js"></script>
+</body>
+
+</html>

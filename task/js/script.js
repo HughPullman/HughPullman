@@ -1,7 +1,7 @@
 $('#submitEarthquakeInfo').click(function() {
 
     $.ajax({
-        url: "task/php/getEarthquakeInfo.php",
+        url: "php/getEarthquakeInfo.php",
         type: 'POST',
         dataType: 'json',
         data: {
@@ -32,7 +32,7 @@ $('#submitEarthquakeInfo').click(function() {
 $('#submitOceanInfo').click(function() {
 
     $.ajax({
-        url: "task/php/getOceanInfo.php",
+        url: "php/getOceanInfo.php",
         type: 'POST',
         dataType: 'json',
         data: {
@@ -53,7 +53,7 @@ $('#submitOceanInfo').click(function() {
 $('#submitWeatherInfo').click(function() {
 
     $.ajax({
-        url: "task/php/getWeatherInfo.php",
+        url: "php/getWeatherInfo.php",
         type: 'POST',
         dataType: 'json',
         data: {
