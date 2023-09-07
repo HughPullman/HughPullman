@@ -47,69 +47,77 @@
     <!-------------------Homepage-------------------->
 
     <div class="home">
-        <div class="infoDropdown">
-            <button class="infobtn" onclick="toggleInfo()">Country Info</button>
+        <div class="allButtons">
+            <div class="infoDropdown">
+                <button class="infobtn" onclick="toggleInfo()">Country Info</button>
+            </div>
+            <div class="weatherDropdown">
+                <button class="weatherbtn" onclick="toggleWeather()">Weather</button>
+            </div>
+            <div class="wikiDropdown">
+                <button class="wikibtn" onclick="toggleWiki()">Wikipedia Links</button>
+            </div>
+            <div class="exchangeRatesDropdown">
+                <button class="exchangebtn" onclick="toggleExchange()">Exchange Rate</button>
+            </div>
+            <div class="flagDropdown">
+                <button class="flagbtn" onclick="toggleFlag()">Country Flag</button>
+            </div>
         </div>
-        <div class="info" id="info">
-            <div class="leftHome">
-                <h1>Country Information</h1>
-                <p class="infotitle">Latitude<p id="lat"></p></p>
-                <p class="infotitle">Longitude<p id="lng"></p></p>
-                <p class="infotitle">Country<p id="country"></p></p>
-                <p class="infotitle">Capital City<p id="capital"></p></p>
-                <p class="infotitle">Continent <p id="continent"></p></p>
-                <p class="infotitle">Currency <p id="currency"></p></p>
-                <p class="infotitle">Area:<p id="area"></p></p>
-                <p class="infotitle">Population<p id="population"></p></p>
+        <div class="allInfo">
+            <div class="info" id="info">
+                <div class="leftHome">
+                    <h1>Country Information</h1>
+                    <p class="infotitle">Latitude<p id="lat"></p></p>
+                    <p class="infotitle">Longitude<p id="lng"></p></p>
+                    <p class="infotitle">Country<p id="country"></p></p>
+                    <p class="infotitle">Capital City<p id="capital"></p></p>
+                    <p class="infotitle">Continent <p id="continent"></p></p>
+                    <p class="infotitle">Currency <p id="currency"></p></p>
+                    <p class="infotitle">Area:<p id="area"></p></p>
+                    <p class="infotitle">Population<p id="population"></p></p>
+                </div>
+                
             </div>
             
-        </div>
-        <div class="weatherDropdown">
-            <button class="weatherbtn" onclick="toggleWeather()">Weather</button>
-        </div>
-        <div class="weather" id="weather">
-            <div class="rightHome">
-                <h1>Weather</h1>
-                <p class="infotitle">Temperature</p><p id="temp"></p>
-                <p class="infotitle">Pressure</p><p id="pressure"></p>
-                <p class="infotitle">Humidity</p><p id="humidity"></p>
-                <p class="infotitle">Wind Speed</p><p id="windSpeed"></p>
-                <p class="infotitle">Condition</p><p id="condition"></p>
+            <div class="weather" id="weather">
+                <div class="rightHome">
+                    <h1>Weather</h1>
+                    <p class="infotitle">Temperature</p><p id="temp"></p>
+                    <p class="infotitle">Pressure</p><p id="pressure"></p>
+                    <p class="infotitle">Humidity</p><p id="humidity"></p>
+                    <p class="infotitle">Wind Speed</p><p id="windSpeed"></p>
+                    <p class="infotitle">Condition</p><p id="condition"></p>
+                </div>
+            </div>
+            
+            <div class="wiki" id="wiki">
+                <div class="title"><h2>Related Wikipedia</h2></div>
+                <div class="wikiLinks">
+                    <a id="wiki1" target="_blank"></a>
+                    <a id="wiki2" target="_blank"></a>
+                    <a id="wiki3" target="_blank"></a>
+                    <a id="wiki4" target="_blank"></a>
+                    <a id="wiki5" target="_blank"></a>
+                </div>
+            </div>
+            
+            <div class="exchangeRate" id="exchangeRate">
+                <h2>Exchange Rate</h2>
+                <p>USD = 1</p>
+                <br>
+                <p id="currencyExch"></p>
+            </div>
+            
+            <div class="flag" id="flag">
+                <img src="https://flagsapi.com/BE/flat/64.png" alt="" id="flagimg">
             </div>
         </div>
+        
         <div id="map">
 
         </div>
-        <div class="wikiDropdown">
-            <button class="wikibtn" onclick="toggleWiki()">Wikipedia Links</button>
-        </div>
-        <div class="wiki" id="wiki">
-            <div class="title"><h2>Related Wikipedia</h2></div>
-            <div class="wikiLinks">
-                <a id="wiki1" target="_blank"></a>
-                <a id="wiki2" target="_blank"></a>
-                <a id="wiki3" target="_blank"></a>
-                <a id="wiki4" target="_blank"></a>
-                <a id="wiki5" target="_blank"></a>
-            </div>
-        </div>
-        <div class="exchangeRatesDropdown">
-            <button class="exchangebtn" onclick="toggleExchange()">Exchange Rate</button>
-        </div>
-        <div class="exchangeRate" id="exchangeRate">
-            <h2>Exchange Rate</h2>
-            <p>USD = </p>
-            <p>1</p>
-            <br>
-            <p id="currencyExch"></p>
-            <p id="exchange"></p>
-        </div>
-        <div class="flagDropdown">
-            <button class="flagbtn" onclick="toggleFlag()">Country Flag</button>
-        </div>
-        <div class="flag" id="flag">
-            <img src="https://flagsapi.com/BE/flat/64.png" alt="" id="flagimg">
-        </div>
+        
     </div>
     <script type="application/javascript" src="js/jquery-2.2.3.min.js"></script>
 	<script type="application/javascript" src="js/script.js"></script>

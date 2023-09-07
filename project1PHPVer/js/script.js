@@ -1,4 +1,8 @@
-var mapLocation = {};
+var myIcon = L.icon({
+  iconUrl: 'img/personIcon.png',
+  iconSize: [50, 50],
+  className: 'personIcon'
+})
 
 function getLatLng (country){
   var lat = '';
@@ -258,8 +262,7 @@ function getExchange (currency){
     success: function(result) {
 
       if(result.status.name === "ok"){
-          $('#currencyExch').html([currency] + ' = ');
-          $('#exchange').html(result.data[currency])
+          $('#currencyExch').html([currency] + ' = ' + result.data[currency]);
       }
     },
     error: function(jqXHR, textStatus, errorThrown){
@@ -276,7 +279,7 @@ async function myLocation() {
       getWeather(countryCode.data);
       var name = getCountryName(countryCode.data);
       getWikiInfo(name);
-      var marker = L.marker([e.latitude, e.longitude]).bindPopup('Your are here :)');
+      var marker = L.marker([e.latitude, e.longitude],{icon: myIcon}).bindPopup("You're are here");
             var circle = L.circle([e.latitude, e.longitude], e.accuracy/2, {
                 weight: 1,
                 color: 'green',
@@ -312,7 +315,6 @@ function getCities (north, south, east, west) {
       success: function(result) {
 
         if(result.status.name === "ok"){
-            console.log(result.data);
             for(let i = 0 ; i < result.data.length ; i++){
               var marker = L.marker([result.data[i].lat, result.data[i].lng]).bindPopup(result.data[i].toponymName);
               map.addLayer(marker);
