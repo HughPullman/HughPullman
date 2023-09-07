@@ -129,6 +129,7 @@ function getCountryInfo (country) {
               map.setView([coor.lat,coor.lng], 6);
               getExchange(result.data[0].currencyCode);
               getCountryFlag(result.data[0].countryCode)
+              getCities(result.data[0].north,result.data[0].south,result.data[0].east,result.data[0].west);
           }
       },
       error: function(jqXHR, textStatus, errorThrown){
@@ -278,7 +279,7 @@ async function myLocation() {
       var marker = L.marker([e.latitude, e.longitude]).bindPopup('Your are here :)');
             var circle = L.circle([e.latitude, e.longitude], e.accuracy/2, {
                 weight: 1,
-                color: 'blue',
+                color: 'green',
                 fillColor: '#cacaca',
                 fillOpacity: 0.2
             });
@@ -295,6 +296,34 @@ async function myLocation() {
 
 function getCountryFlag (countryCode) {
   $('#flagimg').attr("src", ("https://flagsapi.com/" + countryCode + "/flat/64.png"))
+}
+
+function getCities (north, south, east, west) {
+    $.ajax({
+      url: "php/getCities.php",
+      type: "POST",
+      dataType: 'json',
+      data: {
+        north: north,
+        south: south,
+        east: east,
+        west: west
+      },
+      success: function(result) {
+
+        if(result.status.name === "ok"){
+            console.log(result.data);
+            for(let i = 0 ; i < result.data.length ; i++){
+              var marker = L.marker([result.data[i].lat, result.data[i].lng]).bindPopup(result.data[i].toponymName);
+              map.addLayer(marker);
+            }
+            
+        }
+      },
+      error: function(jqXHR, textStatus, errorThrown){
+
+      } 
+    });
 }
 
 window.onclick = function(event) {
