@@ -21,24 +21,13 @@
                 <span>Hugh's Map App</span>
             </div>
             <div class="centerNav">
-                <span class="home" onclick="myLocation()">My Location</span>
+                <span class="home" id="homebtn">My Location</span>
             </div>
             <div class="rightNav">
                 <div class="dropdownCont">
-                    <button onclick="dropdownFunc()" class="dropbtn">Select Country</button>
-                    <div id="dropdown" class="dropdown-content">
-                        <a href="#" onclick="getCountryInfo('GB');getWikiInfo('UnitedKingdom');getWeather('GB')">United Kingdom</a>
-                        <a href="#" onclick="getCountryInfo('FR');getWikiInfo('France');getWeather('FR')">France</a>
-                        <a href="#" onclick="getCountryInfo('IT');getWikiInfo('Italy');getWeather('IT')">Italy</a>
-                        <a href="#" onclick="getCountryInfo('ES');getWikiInfo('Spain');getWeather('ES')">Spain</a>
-                        <a href="#" onclick="getCountryInfo('DE');getWikiInfo('Germany');getWeather('DE')">Germany</a>
-                        <a href="#" onclick="getCountryInfo('TH');getWikiInfo('Thailand');getWeather('TH')">Thailand</a>
-                        <a href="#" onclick="getCountryInfo('IN');getWikiInfo('India');getWeather('IN')">India</a>
-                        <a href="#" onclick="getCountryInfo('US');getWikiInfo('UnitedStatesofAmerica');getWeather('US')">USA</a>
-                        <a href="#" onclick="getCountryInfo('CN');getWikiInfo('China');getWeather('CN')">China</a>
-                        <a href="#" onclick="getCountryInfo('JP');getWikiInfo('Japan');getWeather('JP')">Japan</a>
-                        <a href="#" onclick="getCountryInfo('AU');getWikiInfo('Australia');getWeather('AU')">Australia</a>
-                    </div>
+                    <label for="countries" class="dropbtn" id="dropbtn">Select Country :</label>
+                    <select name="countries" id="dropdown" class="dropdown-content">
+                    </select>
                 </div>
             </div>
         </div>
@@ -49,27 +38,25 @@
     <div class="home">
         <div class="allButtons">
             <div class="infoDropdown">
-                <button class="infobtn" onclick="toggleInfo()">Country Info</button>
+                <button class="infobtn" id="infobtn">Country Info</button>
             </div>
             <div class="weatherDropdown">
-                <button class="weatherbtn" onclick="toggleWeather()">Weather</button>
+                <button class="weatherbtn" id="weatherbtn">Weather</button>
             </div>
             <div class="wikiDropdown">
-                <button class="wikibtn" onclick="toggleWiki()">Wikipedia Links</button>
+                <button class="wikibtn" id="wikibtn" >Wikipedia Links</button>
             </div>
             <div class="exchangeRatesDropdown">
-                <button class="exchangebtn" onclick="toggleExchange()">Exchange Rate</button>
+                <button class="exchangebtn" id="exchangebtn">Exchange Rate</button>
             </div>
             <div class="flagDropdown">
-                <button class="flagbtn" onclick="toggleFlag()">Country Flag</button>
+                <button class="flagbtn" id="flagbtn">Country Flag</button>
             </div>
         </div>
         <div class="allInfo">
             <div class="info" id="info">
                 <div class="leftHome">
                     <h1>Country Information</h1>
-                    <p class="infotitle">Latitude<p id="lat"></p></p>
-                    <p class="infotitle">Longitude<p id="lng"></p></p>
                     <p class="infotitle">Country<p id="country"></p></p>
                     <p class="infotitle">Capital City<p id="capital"></p></p>
                     <p class="infotitle">Continent <p id="continent"></p></p>
@@ -84,7 +71,7 @@
                 <div class="rightHome">
                     <h1>Weather</h1>
                     <p class="infotitle">Temperature</p><p id="temp"></p>
-                    <p class="infotitle">Pressure</p><p id="pressure"></p>
+                    <p class="infotitle">Clouds</p><p id="clouds"></p>
                     <p class="infotitle">Humidity</p><p id="humidity"></p>
                     <p class="infotitle">Wind Speed</p><p id="windSpeed"></p>
                     <p class="infotitle">Condition</p><p id="condition"></p>
@@ -117,7 +104,6 @@
         <div id="map">
 
         </div>
-        
     </div>
     <script type="application/javascript" src="js/jquery-2.2.3.min.js"></script>
 	<script type="application/javascript" src="js/script.js"></script>

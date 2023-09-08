@@ -4,111 +4,9 @@ var myIcon = L.icon({
   className: 'personIcon'
 })
 
-function getLatLng (country){
-  var lat = '';
-  var lng = '';
-
-    switch(country){
-      case 'GB':
-        lat = 55.3781;
-        lng = -3.4360;
-        break;
-      case 'FR':
-        lat = 46.2276;
-        lng = 2.2137;
-        break;
-      case 'IT':
-        lat = 41.8719;
-        lng = 12.5674;
-        break;
-      case 'ES':
-        lat = 40.4637;
-        lng = -3.7492;
-        break;
-      case 'DE':
-        lat = 51.1657;
-        lng = 10.4515;
-        break;
-      case 'TH':
-        lat = 15.87;
-        lng = 100.9925;
-        break;
-      case 'IN':
-        lat = 20.5937;
-        lng = 78.9629;
-        break;
-      case 'US':
-        lat = 37.0902;
-        lng = -95.7129;
-        break;
-      case 'CN':
-        lat = 35.8617;
-        lng = 104.1954;
-        break;
-      case 'JP':
-        lat = 36.2048;
-        lng = 138.2529;
-        break;
-      case 'AU':
-        lat = -25.2744;
-        lng = 133.7751;
-        break;
-    }
-
-    var coord = {
-      lat: lat,
-      lng: lng
-    }
-  
-  return coord
-}
-
-function getCountryName(countryCode){
-
-  var name = '';
-
-  switch(countryCode){
-    case 'GB':
-      name = 'UnitedKingdom'
-      break;
-    case 'FR':
-      name = 'France'
-      break;
-    case 'IT':
-      name = 'Italy'
-      break;
-    case 'ES':
-      name = 'Spain'
-      break;
-    case 'DE':
-      name = 'Germany'
-      break;
-    case 'TH':
-      name = 'Thailand'
-      break;
-    case 'IN':
-      name = 'India'
-      break;
-    case 'US':
-      name = 'UnitedStatesofAmerica'
-      break;
-    case 'CN':
-      name = 'China'
-      break;
-    case 'JP':
-      name = 'Japan'
-      break;
-    case 'AU':
-      name = 'Australia'
-      break;
-  }
-
-return name
-}
 
 function getCountryInfo (country) {
 
-   var coor = getLatLng(country)
 
     $.ajax({
       url: "php/getCountryInfo.php",
@@ -122,18 +20,22 @@ function getCountryInfo (country) {
 
           if(result.status.name == "ok") {
 
-              $('#lat').html(coor.lat.toFixed(3));
-              $('#lng').html(coor.lng.toFixed(3));
               $('#country').html(result.data[0].countryName);
               $('#capital').html(result.data[0].capital);
               $('#continent').html(result.data[0].continentName);
               $('#currency').html(result.data[0].currencyCode);
               $('#area').html(result.data[0].areaInSqKm);
               $('#population').html(result.data[0].population);
-              map.setView([coor.lat,coor.lng], 6);
+              getWeather(result.data[0].north, result.data[0].south,result.data[0].east,result.data[0].west)
               getExchange(result.data[0].currencyCode);
               getCountryFlag(result.data[0].countryCode)
               getCities(result.data[0].north,result.data[0].south,result.data[0].east,result.data[0].west);
+
+              var corner1 = L.latLng(result.data[0].north, result.data[0].west);
+              var corner2 = L.latLng(result.data[0].south,result.data[0].east);
+              bounds = L.latLngBounds(corner1, corner2);
+
+              map.fitBounds([bounds]);
           }
       },
       error: function(jqXHR, textStatus, errorThrown){
@@ -201,35 +103,32 @@ async function getWikiLink (pageid, wikiId){
 });
 }
 
-function getWeather (country){
-  var coor = getLatLng(country);
+function getWeather (north, south, east, west){
 
     $.ajax({
       url: "php/getWeather.php",
       type: "POST",
       dataType: 'json',
       data: {
-        lat: coor.lat,
-        lng: coor.lng,
+        north: north,
+        south: south,
+        east: east,
+        west: west
       },
       success: function(result) {
 
         if(result.status.name === "ok"){
-            $('#temp').html((result.main.temp - 273.15).toFixed(2) + ' °C');
-            $('#pressure').html(result.main.pressure + ' hPa');
-            $('#humidity').html(result.main.humidity + ' %');
-            $('#windSpeed').html(result.wind.speed + ' MPH');
-            $('#condition').html(result.data[0].description);
+            $('#temp').html(result.data[0].temperature+ ' °C');
+            $('#clouds').html(result.data[0].clouds);
+            $('#humidity').html(result.data[0].humidity + ' %');
+            $('#windSpeed').html(result.data[0].windSpeed + ' MPH');
+            $('#condition').html(result.data[0].weatherCondition);
         }
       },
       error: function(jqXHR, textStatus, errorThrown){
 
       } 
     });
-}
-
-function dropdownFunc() {
-  document.getElementById("dropdown").classList.toggle("show");
 }
 
 function getCountryCode(lat, lng) {
@@ -251,7 +150,7 @@ function getCountryCode(lat, lng) {
 
     } 
   });
-}
+};
 
 function getExchange (currency){
   $.ajax({
@@ -277,8 +176,8 @@ async function myLocation() {
       var countryCode = await getCountryCode(e.latitude,e.longitude);
       getCountryInfo(countryCode.data);
       getWeather(countryCode.data);
-      var name = getCountryName(countryCode.data);
-      getWikiInfo(name);
+      setSelectedBorder(countryCode.data);
+      getWikiInfo('United Kingdom');
       var marker = L.marker([e.latitude, e.longitude],{icon: myIcon}).bindPopup("You're are here");
             var circle = L.circle([e.latitude, e.longitude], e.accuracy/2, {
                 weight: 1,
@@ -296,6 +195,10 @@ async function myLocation() {
         });
    
 }
+
+$('#homebtn').click(function (){
+  myLocation();
+});
 
 function getCountryFlag (countryCode) {
   $('#flagimg').attr("src", ("https://flagsapi.com/" + countryCode + "/flat/64.png"))
@@ -328,6 +231,62 @@ function getCities (north, south, east, west) {
     });
 }
 
+function getCountries () {
+
+  $.ajax({
+    url: 'php/getCountries.php',
+    type: 'POST',
+    dataType: 'json',
+
+    success: function(result) {
+      setNames(result.data);
+    },
+    error: function(jqXHR, textStatus, errorThrown){
+
+    } 
+  });
+}
+
+function setNames (data){
+  for(let i = 0 ; i < data.length ; i++){
+    $('#dropdown').append($('<option>', {
+      value: data[i].properties.iso_a2,
+      text: data[i].properties.name,
+      id: data[i].properties.iso_a2
+    }))
+  }
+}
+
+function setSelectedBorder (selectedIso){
+  $.ajax({
+    url: 'php/getCountries.php',
+    type: 'POST',
+    dataType: 'json',
+
+    success: function(result) {
+      var selectedData = result.data.find(item => item.properties.iso_a2 === selectedIso);
+      L.geoJSON(selectedData).addTo(map);
+    },
+    error: function(jqXHR, textStatus, errorThrown){
+
+    } 
+  });
+}
+
+
+$('#dropdown').change(function() {
+  var selected = document.querySelector('#dropdown');
+  var value = selected.value;
+  var text = $("#dropdown").find(":selected").text();
+  var name = text.split(" ").join("");
+  getCountryInfo(value);
+  getWikiInfo(name);
+  setSelectedBorder(value);
+
+
+})
+
+
 window.onclick = function(event) {
   if (!event.target.matches('.dropbtn')) {
     var dropdowns = document.getElementsByClassName("dropdown-content");
@@ -341,25 +300,25 @@ window.onclick = function(event) {
   }
 }
 
-function toggleInfo() {
+$('#infobtn').click(function () {
   document.getElementById("info").classList.toggle("showinfo");
-}
+});
 
-function toggleWiki() {
+$('#wikibtn').click(function () {
   document.getElementById("wiki").classList.toggle("showinfo")
-}
+});
 
-function toggleWeather() {
+$('#weatherbtn').click(function () {
   document.getElementById("weather").classList.toggle("showinfo")
-}
+});
 
-function toggleExchange(){
+$('#exchangebtn').click( function (){
   document.getElementById("exchangeRate").classList.toggle("showinfo")
-}
+});
 
-function toggleFlag(){
+$('#flagbtn').click(function (){
   document.getElementById("flag").classList.toggle("showinfo")
-}
+});
 
 var streets = L.tileLayer(
   "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
@@ -387,6 +346,7 @@ var map = L.map("map", {
 
 window.onload = () => {
    myLocation();
+   getCountries();
 };
 
 var layerControl = L.control.layers(basemaps).addTo(map);
