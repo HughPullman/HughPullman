@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <link rel="stylesheet" href="css/index.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
 <html lang="en">
 
@@ -11,11 +12,16 @@
     <meta name="author" content="Hugh Pullman">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css"/>
+    <link rel="stylesheet" href="css/leaflet.extra-markers.min.css">
+    <script src="js/leaflet.extra-markers.min.js"></script>  
 </head>
 
 <body>
     <!-------------------Navbar-------------------->
-    <div class="navbar">
+    <div class="myNavbar">
         <div class="wrapper">
             <div class="leftNav">
                 <span>Hugh's Map App</span>
@@ -25,7 +31,6 @@
             </div>
             <div class="rightNav">
                 <div class="dropdownCont">
-                    <label for="countries" class="dropbtn" id="dropbtn">Select Country :</label>
                     <select name="countries" id="dropdown" class="dropdown-content">
                     </select>
                 </div>
@@ -34,79 +39,266 @@
     </div>
 
     <!-------------------Homepage-------------------->
-
-    <div class="home">
-        <div class="allButtons">
-            <div class="infoDropdown">
-                <button class="infobtn" id="infobtn">Country Info</button>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#infoModal" id="infomodalbtn">
+        Country Information
+    </button>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#wikiModal" id="wikimodalbtn">
+        Wikipedia Links
+    </button>
+  
+    <!-- Modal -->
+    <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content shadow">
+            <div class="modal-header bg-success bg-gradient text-white">
+            <h5 class="modal-title" id="exampleModalLabel">Country Information</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="weatherDropdown">
-                <button class="weatherbtn" id="weatherbtn">Weather</button>
-            </div>
-            <div class="wikiDropdown">
-                <button class="wikibtn" id="wikibtn" >Wikipedia Links</button>
-            </div>
-            <div class="exchangeRatesDropdown">
-                <button class="exchangebtn" id="exchangebtn">Exchange Rate</button>
-            </div>
-            <div class="flagDropdown">
-                <button class="flagbtn" id="flagbtn">Country Flag</button>
-            </div>
-        </div>
-        <div class="allInfo">
-            <div class="info" id="info">
-                <div class="leftHome">
-                    <h1>Country Information</h1>
-                    <p class="infotitle">Country<p id="country"></p></p>
-                    <p class="infotitle">Capital City<p id="capital"></p></p>
-                    <p class="infotitle">Continent <p id="continent"></p></p>
-                    <p class="infotitle">Currency <p id="currency"></p></p>
-                    <p class="infotitle">Area:<p id="area"></p></p>
-                    <p class="infotitle">Population<p id="population"></p></p>
-                </div>
-                
-            </div>
+            <div class="modal-body">
+                <table class="table table-striped">
+                    <tr>
+          
+                      <td class="text-center">
+                        <i class="fa-solid fa-earth-americas" style="color: #198754;"></i>
+                      </td>
+          
+                      <td>
+                        Country
+                      </td>
+          
+                      <td id="country" class="text-end">
+                        
+                      </td>
+          
+                    </tr>
+                    <tr>
+          
+                      <td class="text-center">
+                        <i class="fa-solid fa-city" style="color: #198754;"></i>
+                      </td>
+          
+                      <td>
+                        Capital City
+                      </td>
+          
+                      <td id="capital" class="text-end">
+                        
+                      </td>
+          
+                    </tr>
+                    <tr>
+          
+                        <td class="text-center">
+                            <i class="fa-solid fa-earth-oceania" style="color: #198754;"></i>
+                        </td>
             
-            <div class="weather" id="weather">
-                <div class="rightHome">
-                    <h1>Weather</h1>
-                    <p class="infotitle">Temperature</p><p id="temp"></p>
-                    <p class="infotitle">Clouds</p><p id="clouds"></p>
-                    <p class="infotitle">Humidity</p><p id="humidity"></p>
-                    <p class="infotitle">Wind Speed</p><p id="windSpeed"></p>
-                    <p class="infotitle">Condition</p><p id="condition"></p>
-                </div>
-            </div>
+                        <td>
+                          Continent
+                        </td>
             
-            <div class="wiki" id="wiki">
-                <div class="title"><h2>Related Wikipedia</h2></div>
-                <div class="wikiLinks">
-                    <a id="wiki1" target="_blank"></a>
-                    <a id="wiki2" target="_blank"></a>
-                    <a id="wiki3" target="_blank"></a>
-                    <a id="wiki4" target="_blank"></a>
-                    <a id="wiki5" target="_blank"></a>
-                </div>
-            </div>
+                        <td id="continent" class="text-end">
+                          
+                        </td>
             
-            <div class="exchangeRate" id="exchangeRate">
-                <h2>Exchange Rate</h2>
-                <p>USD = 1</p>
-                <br>
-                <p id="currencyExch"></p>
-            </div>
-            
-            <div class="flag" id="flag">
-                <img src="https://flagsapi.com/BE/flat/64.png" alt="" id="flagimg">
-            </div>
-        </div>
+                    </tr>
+                    <tr>
+          
+                    <td class="text-center">
+                        <i class="fa-solid fa-money-bill fa-xl text-success">
+                    </td>
         
+                    <td>
+                        Currency
+                    </td>
+        
+                    <td id="currency" class="text-end">
+                        
+                    </td>
+        
+                    </tr>
+                    <tr>
+          
+                    <td class="text-center">
+                        <i class="fa-solid fa-chart-area" style="color: #198754;"></i>
+                    </td>
+        
+                    <td>
+                        Surface Area
+                    </td>
+        
+                    <td id="area" class="text-end">
+                        
+                    </td>
+        
+                    </tr> 
+                    <tr>
+          
+                    <td class="text-center">
+                        <i class="fa-solid fa-person" style="color: #198754;"></i>
+                    </td>
+        
+                    <td>
+                        Population
+                    </td>
+        
+                    <td id="population" class="text-end">
+                        
+                    </td>
+        
+                    </tr>
+                    <tr>
+          
+                    <td class="text-center">
+                        <i class="fa-solid fa-money-bill-transfer" style="color: #198754;"></i>
+                    </td>
+        
+                    <td>
+                        Exchange Rate -  USD = 1
+                    </td>
+        
+                    <td id="currencyExch" class="text-end">
+                        
+                    </td>
+        
+                    </tr>
+                    <tr>
+          
+                    <td class="text-center">
+                        <i class="fa-solid fa-flag" style="color: #198754;"></i>
+                    </td>
+        
+                    <td>
+                        Country Flag
+                    </td>
+        
+                    <td id="flag" class="text-end">
+                        <img src="https://flagsapi.com/BE/flat/64.png" alt="" id="flagimg">
+                    </td>
+                        
+                    </tr>         
+                  </table>
+                <div class="modal-header ">
+                  <h5 class="modal-title " id="exampleModalLabel">Weather</h5>
+                </div>
+                  <table class="table table-striped">
+                    <tr>
+          
+                      <td class="text-center">
+                        <i class="fa-solid fa-temperature-low" style="color: #198754;"></i>
+                      </td>
+          
+                      <td>
+                        Temperature
+                      </td>
+          
+                      <td id="temp" class="text-end">
+                        
+                      </td>
+          
+                    </tr>
+                    <tr>
+          
+                      <td class="text-center">
+                        <i class="fa-solid fa-cloud" style="color: #198754;"></i>
+                      </td>
+          
+                      <td>
+                        Clouds
+                      </td>
+          
+                      <td id="clouds" class="text-end">
+                        
+                      </td>
+          
+                    </tr>
+                    <tr>
+          
+                        <td class="text-center">
+                            <i class="fa-solid fa-droplet" style="color: #198754;"></i>
+                        </td>
+            
+                        <td>
+                          Humidity
+                        </td>
+            
+                        <td id="humidity" class="text-end">
+                          
+                        </td>
+            
+                    </tr>
+                    <tr>
+          
+                    <td class="text-center">
+                        <i class="fa-solid fa-wind" style="color: #198354;"></i>
+                    </td>
+        
+                    <td>
+                        Wind Speed
+                    </td>
+        
+                    <td id="windSpeed" class="text-end">
+                        
+                    </td>
+        
+                    </tr>
+                    <tr>
+          
+                    <td class="text-center">
+                        <i class="fa-solid fa-sun" style="color: #198754;"></i>
+                    </td>
+        
+                    <td>
+                        Condition
+                    </td>
+        
+                    <td id="condition" class="text-end">
+                        
+                    </td>
+        
+                    </tr>       
+                  </table>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="modal fade" id="wikiModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-success bg-gradient text-white">
+            <h5 class="modal-title" id="exampleModalLabel">Related Wikipedia</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <a id="wiki1" target="_blank"></a>
+                <p id="wiki1Snippet"></p>
+                <a id="wiki2" target="_blank"></a>
+                <p id="wiki2Snippet"></p>
+                <a id="wiki3" target="_blank"></a>
+                <p id="wiki3Snippet"></p>
+                <a id="wiki4" target="_blank"></a>
+                <p id="wiki4Snippet"></p>
+                <a id="wiki5" target="_blank"></a>
+                <p id="wiki5Snippet"></p>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="home">
         <div id="map">
 
         </div>
     </div>
     <script type="application/javascript" src="js/jquery-2.2.3.min.js"></script>
 	<script type="application/javascript" src="js/script.js"></script>
+    <script src="https://kit.fontawesome.com/c081459516.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 </body>
 
 </html>

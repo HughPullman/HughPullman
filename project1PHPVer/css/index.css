@@ -17,7 +17,7 @@
     z-index: 0;
 }
 
-.navbar{
+.myNavbar{
     height: 80px;
     background-color: #0B0C10;
     color: white;
@@ -84,262 +84,37 @@
     padding-right: 50px;
 }
 
-.dropbtn{
-    background-color: #3ab672;
-    border-radius: 10px;
-    color: white;
-    padding: 15px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-    min-width: 150px;
-    margin-right: 10px;
-}
-
 .home{
     display: flex;
     position: relative;
 }
 
-.infobtn{
-    background-color: #3ab672;
-    border-radius: 10px;
-    color: white;
-    padding: 15px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-    min-width: 150px;
-    z-index: 10;
-}
-
-.showinfo{
-    display: flex !important;
-}
-
-.infobtn:hover, .infobtn:focus{
-    background-color: #3ab6728a;
-}
-
-.info{
-    display: none;
-    flex-wrap: wrap;
-    flex-direction: column;
-    z-index: 5;
-    gap: 20px;
-    background-color: #2a2b30;
-    color: white;
-    border: 2px solid #3dbd76;
-    border-radius: 20px;
-    padding: 10px;
-}
-
-.infotitle{
-    font-weight: 500 !important;
-}
-
-.info .leftHome{
-    line-height: 22px;
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
-}
-.info .leftHome h1{
-    font-size: 22px;
-}
-
-.info .leftHome p{
-    font-size: 16px;
-    font-weight: 300;
-}
-
-.weatherbtn{
-    background-color: #3ab672;
-    border-radius: 10px;
-    color: white;
-    padding: 15px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-    min-width: 150px;
-    z-index: 10;
-
-}
-
-.weatherbtn:hover, .weatherbtn:focus{
-    background-color: #3ab6728a;
-}
-
-.weather{
-    display: none;
-    flex-wrap: wrap;
-    flex-direction: column;
-    z-index: 5;
-    gap: 20px;
-    background-color: #2a2b30;
-    color: white;
-    border: 2px solid #3dbd76;
-    border-radius: 20px;
-    padding: 10px;
-}
-
-.weather .rightHome{
-    line-height: 22px;
-}
-
-.weather .rightHome h1{
-    font-size: 22px;
-}
-
-.weather .rightHome p{
-    font-size: 16px;
-    font-weight: 300;
-}
-
-.wikibtn{
-    background-color: #3ab672;
-    border-radius: 10px;
-    color: white;
-    padding: 15px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-    min-width: 150px;
-    z-index: 10;
-
-}
-
-.wikibtn:hover, .wikibtn:focus{
-    background-color: #3ab6728a;
-}
-
-.wiki{
-    display: none;
-    flex-wrap: wrap;
-    flex-direction: column;
-    z-index: 5;
-    gap: 20px;
-    background-color: #2a2b30;
-    color: white;
-    border: 2px solid #3dbd76;
-    border-radius: 20px;
-    padding: 10px;
-
-}
-
-.wiki h2{
-    font-size: 22px;
-    font-weight: 700;
-}
-
-.wikiLinks a{
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
-    font-size: 16px;
-    font-weight: 300;
-    line-height: 28px;
-    color: white;
-    text-decoration: none;
-}
-
-.exchangebtn{
-    background-color: #3ab672;
-    border-radius: 10px;
-    color: white;
-    padding: 15px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-    min-width: 150px;
-    z-index: 10;
-}
-
-.exchangebtn:hover, .exchangebtn:focus{
-    background-color: #3ab6728a;
-}
-
-.exchangeRate{
-    display: none;
-    flex-wrap: wrap;
-    flex-direction: column;
-    z-index: 5;
-    gap: 20px;
-    background-color: #2a2b30;
-    color: white;
-    border: 2px solid #3dbd76;
-    border-radius: 20px;
-    padding: 10px;
-
-}
-
-.exchangeRate p{
-    font-size: 20px;
-    font-weight: 300;
-    line-height: 28px;
-}
-
-.exchangeRate h2{
-    font-size: 22px;
-    font-weight: 500;
-}
-
-.flagbtn{
-    background-color: #3ab672;
-    border-radius: 10px;
-    color: white;
-    padding: 15px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-    min-width: 150px;
-    z-index: 10;
-}
-
-.flagbtn:hover, .flagbtn:focus{
-    background-color: #3ab6728a;
-}
-
-.flag{
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 5;
-    background-color: #2a2b30;
-    color: white;
-    border: 2px solid #3dbd76;
-    border-radius: 20px;
-    padding: 10px;
-    width: 200px;
-    height: 200px;
-}
-
-.flag img{
-    width: 90%;
-    object-fit: contain;
-}
-
-.allButtons{
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    z-index: 10;
+#infomodalbtn {
+    background-color: #3ab672 !important;
+    border-radius: 10px !important;
+    color: white !important;
+    padding: 15px !important;
+    font-size: 16px !important;
+    border: none !important;
+    cursor: pointer !important;
+    min-width: 150px !important;
+    z-index: 15 !important;
     position: absolute;
-    top: 15px;
-    left: 50px;
+    top: 95px;
+    left: 55px;
 }
 
-.allInfo{
-    display: flex;
-    flex-wrap: wrap;
-    z-index: 10;
+#wikimodalbtn {
+    background-color: #3ab672 !important;
+    border-radius: 10px !important;
+    color: white !important;
+    padding: 15px !important;
+    font-size: 16px !important;
+    border: none !important;
+    cursor: pointer !important;
+    min-width: 150px !important;
+    z-index: 15 !important;
     position: absolute;
-    top: 75px;
-    left: 50px;
-    gap:10px;
-
-}
-
-img.huechange{
-    filter: hue-rotate(120deg);
+    top: 95px;
+    left: 240px;
 }

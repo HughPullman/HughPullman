@@ -4,6 +4,12 @@ var myIcon = L.icon({
   className: 'personIcon'
 })
 
+var greenMarker = L.ExtraMarkers.icon({
+  icon: 'fa-building',
+  markerColor: 'green',
+  shape: 'circle',
+  prefix: 'fa'
+});
 
 function getCountryInfo (country) {
 
@@ -20,22 +26,25 @@ function getCountryInfo (country) {
 
           if(result.status.name == "ok") {
 
-              $('#country').html(result.data[0].countryName);
-              $('#capital').html(result.data[0].capital);
-              $('#continent').html(result.data[0].continentName);
-              $('#currency').html(result.data[0].currencyCode);
-              $('#area').html(result.data[0].areaInSqKm);
-              $('#population').html(result.data[0].population);
-              getWeather(result.data[0].north, result.data[0].south,result.data[0].east,result.data[0].west)
-              getExchange(result.data[0].currencyCode);
-              getCountryFlag(result.data[0].countryCode)
-              getCities(result.data[0].north,result.data[0].south,result.data[0].east,result.data[0].west);
+            var area = result.data[0].areaInSqKm;
+            var pop = result.data[0].population;
 
-              var corner1 = L.latLng(result.data[0].north, result.data[0].west);
-              var corner2 = L.latLng(result.data[0].south,result.data[0].east);
-              bounds = L.latLngBounds(corner1, corner2);
+            $('#country').html(result.data[0].countryName);
+            $('#capital').html(result.data[0].capital);
+            $('#continent').html(result.data[0].continentName);
+            $('#currency').html(result.data[0].currencyCode);
+            $('#area').html(Number(area).toLocaleString());
+            $('#population').html(Number(pop).toLocaleString());
+            getWeather(result.data[0].north, result.data[0].south,result.data[0].east,result.data[0].west)
+            getExchange(result.data[0].currencyCode);
+            getCountryFlag(result.data[0].countryCode)
+            getCities(result.data[0].north,result.data[0].south,result.data[0].east,result.data[0].west);
 
-              map.fitBounds([bounds]);
+            var corner1 = L.latLng(result.data[0].north, result.data[0].west);
+            var corner2 = L.latLng(result.data[0].south,result.data[0].east);
+            bounds = L.latLngBounds(corner1, corner2);
+
+            map.fitBounds([bounds]);
           }
       },
       error: function(jqXHR, textStatus, errorThrown){
@@ -64,6 +73,11 @@ function getWikiInfo (country) {
             $('#wiki3').html(result.data[2].title);
             $('#wiki4').html(result.data[3].title);
             $('#wiki5').html(result.data[4].title);
+            $('#wiki1Snippet').html(result.data[0].snippet + '...');
+            $('#wiki2Snippet').html(result.data[1].snippet + '...');
+            $('#wiki3Snippet').html(result.data[2].snippet + '...');
+            $('#wiki4Snippet').html(result.data[3].snippet + '...');
+            $('#wiki5Snippet').html(result.data[4].snippet + '...');
 
             getWikiLink(result.data[0].pageid, "#wiki1");
             getWikiLink(result.data[1].pageid,"#wiki2");
@@ -118,11 +132,17 @@ function getWeather (north, south, east, west){
       success: function(result) {
 
         if(result.status.name === "ok"){
+            var condition;
+            if(result.data[0].weatherCondition === 'n\/a'){
+              condition = 'Clear';
+            } else{
+              condition = result.data[0].weatherCondition;
+            }
             $('#temp').html(result.data[0].temperature+ ' °C');
             $('#clouds').html(result.data[0].clouds);
             $('#humidity').html(result.data[0].humidity + ' %');
             $('#windSpeed').html(result.data[0].windSpeed + ' MPH');
-            $('#condition').html(result.data[0].weatherCondition);
+            $('#condition').html(condition);
         }
       },
       error: function(jqXHR, textStatus, errorThrown){
@@ -177,7 +197,7 @@ async function myLocation() {
       getCountryInfo(countryCode.data);
       getWeather(countryCode.data);
       setSelectedBorder(countryCode.data);
-      getWikiInfo('United Kingdom');
+      getWikiInfo('UnitedKingdom');
       var marker = L.marker([e.latitude, e.longitude],{icon: myIcon}).bindPopup("You're are here");
             var circle = L.circle([e.latitude, e.longitude], e.accuracy/2, {
                 weight: 1,
@@ -218,10 +238,14 @@ function getCities (north, south, east, west) {
       success: function(result) {
 
         if(result.status.name === "ok"){
-            for(let i = 0 ; i < result.data.length ; i++){
-              var marker = L.marker([result.data[i].lat, result.data[i].lng]).bindPopup(result.data[i].toponymName);
-              map.addLayer(marker);
-            }
+          var markers = L.markerClusterGroup();
+         
+          for(let i = 0 ; i < result.data.length ; i++){
+            var marker = L.marker([result.data[i].lat, result.data[i].lng], {icon: greenMarker}).bindPopup(result.data[i].toponymName);
+            markers.addLayer(marker);
+          }
+        
+          map.addLayer(markers);
             
         }
       },
@@ -255,8 +279,16 @@ function setNames (data){
       id: data[i].properties.iso_a2
     }))
   }
+  $("#dropdown").append($("#dropdown option")
+                              .remove().sort(function(a, b) {
+                var at = $(a).text(),
+                    bt = $(b).text();
+                return (at > bt) ? 1 : ((at < bt) ? -1 : 0);
+            }));
 }
 
+
+var i = 0;
 function setSelectedBorder (selectedIso){
   $.ajax({
     url: 'php/getCountries.php',
@@ -264,8 +296,15 @@ function setSelectedBorder (selectedIso){
     dataType: 'json',
 
     success: function(result) {
+      if(i > 0){
+        $(".leaflet-interactive").remove();
+      }
+      var borderGroup = new L.LayerGroup();
+      borderGroup.addTo(map);
       var selectedData = result.data.find(item => item.properties.iso_a2 === selectedIso);
-      L.geoJSON(selectedData).addTo(map);
+      var selectedLayer = L.geoJSON(selectedData); 
+      borderGroup.addLayer(selectedLayer);
+      i++;
     },
     error: function(jqXHR, textStatus, errorThrown){
 
@@ -339,6 +378,8 @@ var basemaps = {
   "Streets": streets,
   "Satellite": satellite
 };
+
+
 
 var map = L.map("map", {
   layers: [streets]
