@@ -539,12 +539,10 @@ $('#newsModal').on('show.bs.modal', function(e) {
 
       } else {
 
-        $('#newsModal .modal-title').replaceWith("Error retrieving data");
-
       } 
     },
     error: function(jqXHR, textStatus, errorThrown){
-      $('#newsModal .modal-title').replaceWith("Error retrieving data");
+      
     } 
   });
 })
