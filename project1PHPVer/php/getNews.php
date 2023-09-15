@@ -10,7 +10,7 @@
   $executionStartTime = microtime(true);
 
 
-  $url='http://api.weatherapi.com/v1/forecast.json?q=' . $_REQUEST['capital'] . '&key=13df9d1cf84942c7b8a171053231409&days=3';
+  $url = 'https://api.worldnewsapi.com/search-news?source-countries=' . $_REQUEST['country'] . '&number=5&api-key=455946443a8447f5a9a13e7305a1dd87';
 
   $ch = curl_init();
 
@@ -34,7 +34,7 @@
 
   } else {
 
-    $weather = json_decode($result,true);
+    $news = json_decode($result,true);
 
     if (json_last_error() !== JSON_ERROR_NONE) {
 
@@ -47,34 +47,25 @@
     } else {
 
 
-      if (isset($weather['error'])) {
+      if (isset($news['error'])) {
 
-        $output['status']['code'] = $weather['error']['code'];
         $output['status']['name'] = "Failure - API";
-        $output['status']['description'] = $weather['error']['message'];
+        $output['status']['description'] = $news['info'];
         $output['status']['seconds'] = number_format((microtime(true) - $executionStartTime), 3);
         $output['data'] = null;
 
       } else {
 
-        $finalResult['country'] = $weather['location']['country'];
-        $finalResult['location'] = $weather['location']['name'];
+        $finalResult['news'] = [];
 
-        $finalResult['lastUpdated'] = $weather['current']['last_updated'];
+        foreach ($news['news'] as $item) {
 
-        $finalResult['forecast'] = [];
+          $temp['title'] = $item['title'];
+          $temp['url'] = $item['url'];
+          $temp['image'] = $item['image'];
+          $temp['author'] = $item['author'];
 
-        foreach ($weather['forecast']['forecastday'] as $item) {
-
-          $temp['date'] = $item['date'];
-
-          $temp['minC'] = intval($item['day']['mintemp_c']);
-          $temp['maxC'] = intval($item['day']['maxtemp_c']);
-
-          $temp['conditionText'] = $item['day']['condition']['text'];
-          $temp['conditionIcon'] = 'https:' . $item['day']['condition']['icon'];
-
-          array_push($finalResult['forecast'], $temp);          
+          array_push($finalResult['news'], $temp);          
 
         }
 

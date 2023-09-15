@@ -1,30 +1,86 @@
 <?php
 
-    ini_set('display_errors', 'On');
-    error_reporting(E_ALL);
+  ini_set('display_errors', 'On');
+  error_reporting(E_ALL);
 
-    $executionStartTime = microtime(true);
 
-    $url = 'http://api.geonames.org/citiesJSON?north=' . $_REQUEST['north'] . '&south=' . $_REQUEST['south'] . '&east=' . $_REQUEST['east'] . '&west=' . $_REQUEST['west'] . '&lang=en&username=hughpullman';
+  header('Content-Type: application/json; charset=UTF-8');
+  header('Access-Control-Allow-Origin: *'); 
 
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($ch, CURLOPT_URL,$url);
+  $executionStartTime = microtime(true);
 
-	$result=curl_exec($ch);
 
-    curl_close($ch);
+  $url='http://api.geonames.org/citiesJSON?north=' . $_REQUEST['north'] . '&south=' . $_REQUEST['south'] . '&east=' . $_REQUEST['east'] . '&west=' . $_REQUEST['west'] . '&lang=en&username=hughpullman';
 
-    $decode = json_decode($result,true);
-    $output['status']['code'] = "200";
-	$output['status']['name'] = "ok";
-	$output['status']['description'] = "success";
-	$output['status']['returnedIn'] = intval((microtime(true) - $executionStartTime) * 1000) . " ms";
-	$output['data'] = $decode['geonames'];
+  $ch = curl_init();
 
-    header('Content-Type: application/json; charset=UTF-8');
+  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+  curl_setopt($ch, CURLOPT_URL,$url);
 
-    echo json_encode($output); 
+  $result = curl_exec($ch);
 
-    ?>
+  $cURLERROR = curl_errno($ch);
+  
+  curl_close($ch);
+
+  if ($cURLERROR) {
+
+    $output['status']['code'] = $cURLERROR;
+    $output['status']['name'] = "Failure - cURL";
+    $output['status']['description'] = curl_strerror($cURLERROR);
+    $output['status']['seconds'] = number_format((microtime(true) - $executionStartTime), 3);
+    $output['data'] = null;
+
+  } else {
+
+    $cities = json_decode($result,true);
+
+    if (json_last_error() !== JSON_ERROR_NONE) {
+
+      $output['status']['code'] = json_last_error();
+      $output['status']['name'] = "Failure - JSON";
+      $output['status']['description'] = json_last_error_msg();
+      $output['status']['seconds'] = number_format((microtime(true) - $executionStartTime), 3);
+      $output['data'] = null;
+
+    } else {
+
+
+      if (isset($cities['message'])) {
+
+        $output['status']['name'] = "Failure - API";
+        $output['status']['description'] = $cities['message'];
+        $output['status']['seconds'] = number_format((microtime(true) - $executionStartTime), 3);
+        $output['data'] = null;
+
+      } else {
+
+        $finalResult['cities'] = [];
+
+        foreach ($cities['geonames'] as $item) {
+
+          $temp['lng'] = $item['lng'];
+          $temp['lat'] = $item['lat'];
+          $temp['population'] = $item['population'];
+          $temp['name'] = $item['toponymName'];
+
+          array_push($finalResult['cities'], $temp);          
+
+        }
+
+        $output['status']['code'] = 200;
+        $output['status']['name'] = "success";
+        $output['status']['description'] = "all ok";
+        $output['status']['seconds'] = number_format((microtime(true) - $executionStartTime), 3);
+        $output['data'] = $finalResult;
+
+      }
+
+    }
+
+  }
+
+  echo json_encode($output, JSON_NUMERIC_CHECK); 
+
+?>

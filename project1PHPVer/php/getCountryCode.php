@@ -21,7 +21,8 @@
 	$output['status']['name'] = "ok";
 	$output['status']['description'] = "success";
 	$output['status']['returnedIn'] = intval((microtime(true) - $executionStartTime) * 1000) . " ms";
-	$output['data'] = $decode['countryCode'];
+	$output['data']['countryCode'] = $decode['countryCode'];
+    $outpute['data']['countryName'] = $decode['countryName'];
 
     header('Content-Type: application/json; charset=UTF-8');
 

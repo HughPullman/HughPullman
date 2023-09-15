@@ -10,7 +10,7 @@
   $executionStartTime = microtime(true);
 
 
-  $url='http://api.weatherapi.com/v1/forecast.json?q=' . $_REQUEST['capital'] . '&key=13df9d1cf84942c7b8a171053231409&days=3';
+  $url = 'https://date.nager.at/api/v3/publicholidays/2023/' . $_REQUEST['country'];
 
   $ch = curl_init();
 
@@ -34,7 +34,7 @@
 
   } else {
 
-    $weather = json_decode($result,true);
+    $holidays = json_decode($result,true);
 
     if (json_last_error() !== JSON_ERROR_NONE) {
 
@@ -47,35 +47,23 @@
     } else {
 
 
-      if (isset($weather['error'])) {
+      if (isset($holidays['error'])) {
 
-        $output['status']['code'] = $weather['error']['code'];
         $output['status']['name'] = "Failure - API";
-        $output['status']['description'] = $weather['error']['message'];
+        $output['status']['description'] = $holidays['info'];
         $output['status']['seconds'] = number_format((microtime(true) - $executionStartTime), 3);
         $output['data'] = null;
 
       } else {
 
-        $finalResult['country'] = $weather['location']['country'];
-        $finalResult['location'] = $weather['location']['name'];
+        $finalResult['holidays'] = [];
 
-        $finalResult['lastUpdated'] = $weather['current']['last_updated'];
+        foreach ($holidays as $item){
 
-        $finalResult['forecast'] = [];
+            $temp['date'] = $item['date'];
+            $temp['name'] = $item['name'];
 
-        foreach ($weather['forecast']['forecastday'] as $item) {
-
-          $temp['date'] = $item['date'];
-
-          $temp['minC'] = intval($item['day']['mintemp_c']);
-          $temp['maxC'] = intval($item['day']['maxtemp_c']);
-
-          $temp['conditionText'] = $item['day']['condition']['text'];
-          $temp['conditionIcon'] = 'https:' . $item['day']['condition']['icon'];
-
-          array_push($finalResult['forecast'], $temp);          
-
+            array_push($finalResult['holidays'], $temp);
         }
 
         $output['status']['code'] = 200;

@@ -10,7 +10,7 @@
   $executionStartTime = microtime(true);
 
 
-  $url='http://api.weatherapi.com/v1/forecast.json?q=' . $_REQUEST['capital'] . '&key=13df9d1cf84942c7b8a171053231409&days=3';
+  $url='http://api.geonames.org/searchJSON?name=airport&country=' . $_REQUEST['country'] . '&maxRows=10&lang=en&username=hughpullman';
 
   $ch = curl_init();
 
@@ -34,7 +34,7 @@
 
   } else {
 
-    $weather = json_decode($result,true);
+    $airports = json_decode($result,true);
 
     if (json_last_error() !== JSON_ERROR_NONE) {
 
@@ -47,34 +47,24 @@
     } else {
 
 
-      if (isset($weather['error'])) {
+      if (isset($airports['message'])) {
 
-        $output['status']['code'] = $weather['error']['code'];
         $output['status']['name'] = "Failure - API";
-        $output['status']['description'] = $weather['error']['message'];
+        $output['status']['description'] = $airports['status']['message'];
         $output['status']['seconds'] = number_format((microtime(true) - $executionStartTime), 3);
         $output['data'] = null;
 
       } else {
 
-        $finalResult['country'] = $weather['location']['country'];
-        $finalResult['location'] = $weather['location']['name'];
+        $finalResult['airports'] = [];
 
-        $finalResult['lastUpdated'] = $weather['current']['last_updated'];
+        foreach ($airports['geonames'] as $item) {
 
-        $finalResult['forecast'] = [];
+          $temp['lng'] = $item['lng'];
+          $temp['lat'] = $item['lat'];
+          $temp['name'] = $item['toponymName'];
 
-        foreach ($weather['forecast']['forecastday'] as $item) {
-
-          $temp['date'] = $item['date'];
-
-          $temp['minC'] = intval($item['day']['mintemp_c']);
-          $temp['maxC'] = intval($item['day']['maxtemp_c']);
-
-          $temp['conditionText'] = $item['day']['condition']['text'];
-          $temp['conditionIcon'] = 'https:' . $item['day']['condition']['icon'];
-
-          array_push($finalResult['forecast'], $temp);          
+          array_push($finalResult['airports'], $temp);          
 
         }
 

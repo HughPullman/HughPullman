@@ -1,278 +1,230 @@
 <!DOCTYPE html>
 <link rel="stylesheet" href="css/index.css">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+<link rel="stylesheet" href="css/bootstrap.css">
 
 <html lang="en">
 
 <head>
     <meta charset="utf-8">
-    <title>Map App</title>
+    <title>Gazetteer</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit&family=Prompt&family=Roboto:wght@100;300;500;700;900&family=Space+Mono&display=swap" rel="stylesheet">
-    <meta name="description" content="Map Application Code Academy">
+    <meta name="description" content="Gazetteer Application">
     <meta name="author" content="Hugh Pullman">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css"/>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css"/>
+    <link rel="stylesheet" href="leaflet/leaflet.css">
+    <link rel="stylesheet" href="leafletMarkerCluster/MarkerCluster.css">
+    <link rel="stylesheet" href="leafletMarkerCluster/MarkerCluster.Default.css">
     <link rel="stylesheet" href="css/leaflet.extra-markers.min.css">
-    <script src="js/leaflet.extra-markers.min.js"></script>  
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="stylesheet" href="css/easy-button.css">
+        
 </head>
 
 <body>
     <!-------------------Navbar-------------------->
-    <div class="myNavbar">
-        <div class="wrapper">
-            <div class="leftNav">
-                <span>Hugh's Map App</span>
-            </div>
-            <div class="centerNav">
-                <span class="home" id="homebtn">My Location</span>
-            </div>
-            <div class="rightNav">
-                <div class="dropdownCont">
-                    <select name="countries" id="dropdown" class="dropdown-content">
-                    </select>
+
+    <span id="nav">
+            <select name="countries" id="dropdown" class="form-select shadow-sm">
+            </select>
+    </span>
+
+    <div id="map">
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content shadow">
+                <div class="modal-header bg-success bg-gradient text-white">
+                    <i class="fa fa-info-circle fa-xl" aria-hidden="true"></i>
+                    <h5 class="modal-title" id="infoModalLabel">At a glance</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-striped">
+                        <tr>
+            
+                        <td class="text-center">
+                            <i class="fa-solid fa-city fa-xl" style="color: #198754;"></i>
+                        </td>
+            
+                        <td>
+                            Capital City
+                        </td>
+            
+                        <td id="capital" class="text-end">
+                            
+                        </td>
+            
+                        </tr>
+                        <tr>
+            
+                            <td class="text-center">
+                                <i class="fa-solid fa-earth-oceania fa-xl" style="color: #198754;"></i>
+                            </td>
+                
+                            <td>
+                            Continent
+                            </td>
+                
+                            <td id="continent" class="text-end">
+                            
+                            </td>
+                
+                        </tr>
+                        <tr>
+            
+                        <td class="text-center">
+                            <i class="fa-solid fa-money-bill fa-xl text-success">
+                        </td>
+            
+                        <td>
+                            Currency
+                        </td>
+            
+                        <td id="currency" class="text-end">
+                            
+                        </td>
+            
+                        </tr>
+                        <tr>
+            
+                        <td class="text-center">
+                            <i class="fa-solid fa-chart-area fa-xl" style="color: #198754;"></i>
+                        </td>
+            
+                        <td>
+                            Surface Area
+                        </td>
+            
+                        <td id="area" class="text-end">
+                            
+                        </td>
+            
+                        </tr> 
+                        <tr>
+            
+                        <td class="text-center">
+                            <i class="fa-solid fa-person fa-xl" style="color: #198754;"></i>
+                        </td>
+            
+                        <td>
+                            Population
+                        </td>
+            
+                        <td id="population" class="text-end">
+                            
+                        </td>
+            
+                        </tr>
+                        <tr>
+            
+                        <td class="text-center">
+                            <i class="fa-solid fa-flag fa-xl" style="color: #198754;"></i>
+                        </td>
+            
+                        <td>
+                            Country Flag
+                        </td>
+            
+                        <td id="flag" class="text-end">
+                            <img src="https://flagsapi.com/BE/flat/64.png" alt="" id="flagimg">
+                        </td>
+                            
+                        </tr>         
+                    </table>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-------------------Homepage-------------------->
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#infoModal" id="infomodalbtn">
-        Country Information
-    </button>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#wikiModal" id="wikimodalbtn">
-        Wikipedia Links
-    </button>
-  
-    <!-- Modal -->
-    <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+    <div id="weatherModal" class="modal fade" tabindex="-1" aria-labelledby="weatherModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content shadow">
+                <div class="modal-header bg-success bg-gradient text-white">
+                    <i class="fa fa-thermometer-half fa-xl" aria-hidden="true"></i>
+                    <h5 class="modal-title" id="weatherModalLabel"></h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="pre-load-weather" class="pre-load"></div>
+                    <div class="row">
+                        <div class="col border m-2">
+                            <p class="fw-bold fs-5 mt-1">TODAY</p>
+                            <div class="row">
+                                <div class="col text-center m-3">
+                                    <p id="todayConditions" class="fw-bold fs-6"></p>
+                                </div>
+
+                                <div class="col text-center">
+                                    <img src="" alt="" id="todayIcon" class="img-fluid mt-0">
+                                </div>
+
+                                <div class="col text-center">
+                                    <p class="fw-bold fs-4 mb-0">
+                                        <span id="todayMaxTemp"></span>
+                                        <sup>o</sup><span class="tempMetric">c</span>
+                                    </p>
+                                    <p class="fs-5 mt-0 text-secondary">
+                                        <span id="todayMinTemp"></span>
+                                        <sup>o</sup><span class="tempMetric">c</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col text-center">         
+                          <p id="day1Date" class="fw-bold fs-6 mt-3"></p>                         
+                        </div>                        
+                    </div>                    
+                    <div class="row">                      
+                        <div class="col text-center">                          
+                          <p class="fw-bold fs-4 mb-0"><span id="day1MaxTemp"></span><sup>o</sup>c</p>
+                          <p class="fs-5 mt-0 text-secondary"><span id="day1MinTemp"></span><sup>o</sup>c</p>                          
+                        </div>        
+                        <div class="col text-center">                          
+                          <img id="day1Icon" src="" alt="" title="">                         
+                        </div>                           
+                    </div>                                  
+                    <div class="col border m-2">          
+                      <div class="row">                       
+                        <div class="col text-center">        
+                          <p id="day2Date" class="fw-bold fs-6 mt-3"></p>                        
+                        </div>                       
+                      </div>                     
+                      <div class="row">                       
+                        <div class="col text-center">                          
+                            <p class="fw-bold fs-4 mb-0"><span id="day2MaxTemp"></span><sup>o</sup>c</p>
+                            <p class="fs-5 mt-0 text-secondary"><span id="day2MinTemp"></span><sup>o</sup>c</p>                          
+                        </div>                        
+                        <div class="col text-center">                          
+                            <img id="day2Icon" src="" alt="" title="">                          
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <div class="modal fade" id="wikiModal" tabindex="-1" aria-labelledby="wikiModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content shadow">
             <div class="modal-header bg-success bg-gradient text-white">
-            <h5 class="modal-title" id="exampleModalLabel">Country Information</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <table class="table table-striped">
-                    <tr>
-          
-                      <td class="text-center">
-                        <i class="fa-solid fa-earth-americas" style="color: #198754;"></i>
-                      </td>
-          
-                      <td>
-                        Country
-                      </td>
-          
-                      <td id="country" class="text-end">
-                        
-                      </td>
-          
-                    </tr>
-                    <tr>
-          
-                      <td class="text-center">
-                        <i class="fa-solid fa-city" style="color: #198754;"></i>
-                      </td>
-          
-                      <td>
-                        Capital City
-                      </td>
-          
-                      <td id="capital" class="text-end">
-                        
-                      </td>
-          
-                    </tr>
-                    <tr>
-          
-                        <td class="text-center">
-                            <i class="fa-solid fa-earth-oceania" style="color: #198754;"></i>
-                        </td>
-            
-                        <td>
-                          Continent
-                        </td>
-            
-                        <td id="continent" class="text-end">
-                          
-                        </td>
-            
-                    </tr>
-                    <tr>
-          
-                    <td class="text-center">
-                        <i class="fa-solid fa-money-bill fa-xl text-success">
-                    </td>
-        
-                    <td>
-                        Currency
-                    </td>
-        
-                    <td id="currency" class="text-end">
-                        
-                    </td>
-        
-                    </tr>
-                    <tr>
-          
-                    <td class="text-center">
-                        <i class="fa-solid fa-chart-area" style="color: #198754;"></i>
-                    </td>
-        
-                    <td>
-                        Surface Area
-                    </td>
-        
-                    <td id="area" class="text-end">
-                        
-                    </td>
-        
-                    </tr> 
-                    <tr>
-          
-                    <td class="text-center">
-                        <i class="fa-solid fa-person" style="color: #198754;"></i>
-                    </td>
-        
-                    <td>
-                        Population
-                    </td>
-        
-                    <td id="population" class="text-end">
-                        
-                    </td>
-        
-                    </tr>
-                    <tr>
-          
-                    <td class="text-center">
-                        <i class="fa-solid fa-money-bill-transfer" style="color: #198754;"></i>
-                    </td>
-        
-                    <td>
-                        Exchange Rate -  USD = 1
-                    </td>
-        
-                    <td id="currencyExch" class="text-end">
-                        
-                    </td>
-        
-                    </tr>
-                    <tr>
-          
-                    <td class="text-center">
-                        <i class="fa-solid fa-flag" style="color: #198754;"></i>
-                    </td>
-        
-                    <td>
-                        Country Flag
-                    </td>
-        
-                    <td id="flag" class="text-end">
-                        <img src="https://flagsapi.com/BE/flat/64.png" alt="" id="flagimg">
-                    </td>
-                        
-                    </tr>         
-                  </table>
-                <div class="modal-header ">
-                  <h5 class="modal-title " id="exampleModalLabel">Weather</h5>
-                </div>
-                  <table class="table table-striped">
-                    <tr>
-          
-                      <td class="text-center">
-                        <i class="fa-solid fa-temperature-low" style="color: #198754;"></i>
-                      </td>
-          
-                      <td>
-                        Temperature
-                      </td>
-          
-                      <td id="temp" class="text-end">
-                        
-                      </td>
-          
-                    </tr>
-                    <tr>
-          
-                      <td class="text-center">
-                        <i class="fa-solid fa-cloud" style="color: #198754;"></i>
-                      </td>
-          
-                      <td>
-                        Clouds
-                      </td>
-          
-                      <td id="clouds" class="text-end">
-                        
-                      </td>
-          
-                    </tr>
-                    <tr>
-          
-                        <td class="text-center">
-                            <i class="fa-solid fa-droplet" style="color: #198754;"></i>
-                        </td>
-            
-                        <td>
-                          Humidity
-                        </td>
-            
-                        <td id="humidity" class="text-end">
-                          
-                        </td>
-            
-                    </tr>
-                    <tr>
-          
-                    <td class="text-center">
-                        <i class="fa-solid fa-wind" style="color: #198354;"></i>
-                    </td>
-        
-                    <td>
-                        Wind Speed
-                    </td>
-        
-                    <td id="windSpeed" class="text-end">
-                        
-                    </td>
-        
-                    </tr>
-                    <tr>
-          
-                    <td class="text-center">
-                        <i class="fa-solid fa-sun" style="color: #198754;"></i>
-                    </td>
-        
-                    <td>
-                        Condition
-                    </td>
-        
-                    <td id="condition" class="text-end">
-                        
-                    </td>
-        
-                    </tr>       
-                  </table>
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-        </div>
-    </div>
-    <div class="modal fade" id="wikiModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-success bg-gradient text-white">
-            <h5 class="modal-title" id="exampleModalLabel">Related Wikipedia</h5>
+                <i class="fa fa-wikipedia-w fa-xl" aria-hidden="true"></i>
+            <h5 class="modal-title" id="wikiModalLabel">Related Wikipedia</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <div id="pre-load-wiki" class="pre-load"></div>
                 <a id="wiki1" target="_blank"></a>
                 <p id="wiki1Snippet"></p>
                 <a id="wiki2" target="_blank"></a>
@@ -290,15 +242,189 @@
         </div>
         </div>
     </div>
-    <div class="home">
-        <div id="map">
 
+    <div class="modal fade" id="newsModal" tabindex="-1" aria-labelledby="newsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content shadow">
+            <div class="modal-header bg-success bg-gradient text-white">
+                <i class="fa fa-newspaper-o fa-xl" aria-hidden="true"></i>
+            <h5 class="modal-title" id="newsModalLabel">Local News</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="pre-load-news" class="pre-load"></div>
+                <table class="table table-borderless">
+                    <tr>
+                        <td rowspan="2" width="50%">
+                            <img class="img-fluid rounded" id="newsImg1" src="" alt="">
+                        </td>
+                        
+                        <td>
+                            <a href="" id="newsTitle1" target="_blank" class="fw-bold fs-6 text-black"></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="align-bottom pb-0">
+                            <p class="fw-light fs-6 mb-1" id="newsAuthor1"></p>
+                        </td>
+                    </tr>
+                </table>
+                <table class="table table-borderless">
+                    <tr>
+                        <td rowspan="2" width="50%">
+                            <img class="img-fluid rounded" id="newsImg2" src="" alt="">
+                        </td>
+                        
+                        <td>
+                            <a href="" id="newsTitle2" target="_blank" class="fw-bold fs-6 text-black"></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="align-bottom pb-0">
+                            <p class="fw-light fs-6 mb-1" id="newsAuthor2"></p>
+                        </td>
+                    </tr>
+                </table>
+                <table class="table table-borderless">
+                    <tr>
+                        <td rowspan="2" width="50%">
+                            <img class="img-fluid rounded" id="newsImg3" src="" alt="">
+                        </td>
+                        
+                        <td>
+                            <a href="" id="newsTitle3" target="_blank" class="fw-bold fs-6 text-black"></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="align-bottom pb-0">
+                            <p class="fw-light fs-6 mb-1" id="newsAuthor3"></p>
+                        </td>
+                    </tr>
+                </table>
+                <table class="table table-borderless">
+                    <tr>
+                        <td rowspan="2" width="50%">
+                            <img class="img-fluid rounded" id="newsImg4" src="" alt="">
+                        </td>
+                        
+                        <td>
+                            <a href="" id="newsTitle4" target="_blank" class="fw-bold fs-6 text-black"></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="align-bottom pb-0">
+                            <p class="fw-light fs-6 mb-1" id="newsAuthor4"></p>
+                        </td>
+                    </tr>
+                </table>
+                <table class="table table-borderless">
+                    <tr>
+                        <td rowspan="2" width="50%">
+                            <img class="img-fluid rounded" id="newsImg5" src="" alt="">
+                        </td>
+                        
+                        <td>
+                            <a href="" id="newsTitle5" target="_blank" class="fw-bold fs-6 text-black"></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="align-bottom pb-0">
+                            <p class="fw-light fs-6 mb-1" id="newsAuthor5"></p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
         </div>
     </div>
+    <div class="modal fade" id="holidayModal" tabindex="-1" aria-labelledby="holidayModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content shadow">
+            <div class="modal-header bg-success bg-gradient text-white">
+                <i class="fa fa-sun-o fa-xl" aria-hidden="true"></i>
+            <h5 class="modal-title" id="holidayModalLabel">Public Holidays</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="pre-load-holiday" class="pre-load"></div>
+                <table class="table table-striped" id="holidayTable">
+
+                </table>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <div id="exchangeModal" class="modal fade" tabindex="-1" data-bs-backdrop="false" data-bs-keyboard="false" aria-labelledby="exchangeModalLabel" aria-hidden="true">      
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+      
+          <div class="modal-content shadow">
+      
+            <div class="modal-header bg-success bg-gradient text-white">
+                <i class="fa fa-money fa-xl fa-xl" aria-hidden="true"></i>
+              <h5 class="modal-title">Currency calculator</h5>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+      
+            <div class="modal-body">
+               
+              <form>
+                <div id="pre-load-exchange" class="pre-load"></div>
+                <div class="form-floating mb-3">
+      
+                  <input id="fromAmount" type="number" class="form-control" value="1" min="1" step="1">
+                  <label >From USD</label>
+      
+                </div>
+      
+                <div class="form-floating mb-3">
+      
+                  <select id="exchangeRate" class="form-select">
+                  </select>
+                  
+                  <label for="exchangeRate">Convert to</label>
+      
+                </div>
+      
+                <div class="form-floating">
+      
+                  <input id="toAmount" type="text" class="form-control" disabled>
+                  <label for="toAmount">Result</label>
+      
+                </div>
+      
+              </form>
+      
+            </div>
+      
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-secondary btn-sm myBtn" data-bs-dismiss="modal">CLOSE</button>
+            </div>
+      
+          </div>
+      
+        </div>
+      
+      </div>
+
+
+
     <script type="application/javascript" src="js/jquery-2.2.3.min.js"></script>
-	<script type="application/javascript" src="js/script.js"></script>
     <script src="https://kit.fontawesome.com/c081459516.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script src="leaflet/leaflet.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/date.js"></script>
+    <script src="leafletMarkerCluster/leaflet.markercluster.js"></script>
+    <script src="js/leaflet.extra-markers.min.js"></script>
+    <script src="js/easy-button.js"></script>
+    <script type="application/javascript" src="js/script.js"></script>
+    
 </body>
 
 </html>
