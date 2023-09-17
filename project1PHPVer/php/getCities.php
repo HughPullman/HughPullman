@@ -10,7 +10,7 @@
   $executionStartTime = microtime(true);
 
 
-  $url='http://api.geonames.org/citiesJSON?north=' . $_REQUEST['north'] . '&south=' . $_REQUEST['south'] . '&east=' . $_REQUEST['east'] . '&west=' . $_REQUEST['west'] . '&lang=en&username=hughpullman';
+  $url= 'http://api.geonames.org/searchJSON?featureclass=PPL&country=' . $_REQUEST['country'] . '&maxRows=10&lang=en&username=hughpullman';
 
   $ch = curl_init();
 

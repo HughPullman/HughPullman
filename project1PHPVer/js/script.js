@@ -1,36 +1,30 @@
 
-function getCountryInfo (country) {
-
+$('#infoModal').on('show.bs.modal', function getCountryInfo () {
+  var selected = document.querySelector('#dropdown');
+  var value = selected.value;
 
     $.ajax({
       url: "php/getCountryInfo.php",
       type: 'POST',
       dataType: 'json',
       data:{
-        country: country
+        country: value
       },
 
       success: function(result) {
 
-          if(result.status.name == "ok") {
+          if(result.status.code == 200) {
 
-            var area = result.data[0].areaInSqKm;
-            var pop = result.data[0].population;
+            var area = result.data.area;
+            var pop = result.data.population;
 
-            $('#country').html(result.data[0].countryName);
-            $('#capital').html(result.data[0].capital);
-            $('#continent').html(result.data[0].continentName);
-            $('#currency').html(result.data[0].currencyCode);
+            $('#capital').html(result.data.capital);
+            $('#continent').html(result.data.continent);
+            $('#currency').html(result.data.currency);
             $('#area').html(Number(area).toLocaleString());
             $('#population').html(Number(pop).toLocaleString());
-            getCountryFlag(result.data[0].countryCode)
-            getCities(result.data[0].north,result.data[0].south,result.data[0].east,result.data[0].west, result.data[0].countryCode);
+            getCountryFlag(result.data.countryCode);
 
-            var corner1 = L.latLng(result.data[0].north, result.data[0].west);
-            var corner2 = L.latLng(result.data[0].south,result.data[0].east);
-            bounds = L.latLngBounds(corner1, corner2);
-
-            map.fitBounds([bounds]);
           }
       },
       error: function(jqXHR, textStatus, errorThrown){
@@ -39,7 +33,7 @@ function getCountryInfo (country) {
     });
 
   
-};
+});
 
 $('#wikiModal').on('show.bs.modal', function getWikiInfo (e) {
 
@@ -166,46 +160,72 @@ $('#holidayModal').on('hidden.bs.modal', function (e) {
 });
 
 
-$('#weatherModal').on('show.bs.modal', function(e) {
-    var capital = $('#capital').html();
+$('#weatherModal').on('show.bs.modal', async function(e) {
+    
+  var selected = document.querySelector('#dropdown');
+  var value = selected.value;
+  var capital;
 
-    $.ajax({
-      url: "php/getWeather.php",
-      type: "POST",
-      dataType: 'json',
-      data: {
-        capital: capital
-      },
-      success: function(result) {
+  await $.ajax({
+    url: "php/getCapital.php",
+    type: "POST",
+    dataType: 'json',
+    data: {
+      country: value
+    },
+    success: function(result) {
 
-        if(result.status.code === 200){
+      if(result.status.code === 200){
+        capital = result.data;
 
-            $('#weatherModalLabel').html(result.data.location + ", " + result.data.country);       
-            $('#todayConditions').html(result.data.forecast[0].conditionText);
-            $('#todayIcon').attr("src", result.data.forecast[0].conditionIcon);
-            $('#todayMaxTemp').html(result.data.forecast[0].maxC);
-            $('#todayMinTemp').html(result.data.forecast[0].minC);         
-            $('#day1Date').text(Date.parse(result.data.forecast[1].date).toString("ddd dS"));
-            $('#day1Icon').attr("src", result.data.forecast[1].conditionIcon);
-            $('#day1MinTemp').text(result.data.forecast[1].minC);
-            $('#day1MaxTemp').text(result.data.forecast[1].maxC);        
-            $('#day2Date').text(Date.parse(result.data.forecast[2].date).toString("ddd dS"));
-            $('#day2Icon').attr("src", result.data.forecast[2].conditionIcon);
-            $('#day2MinTemp').text(result.data.forecast[2].minC);
-            $('#day2MaxTemp').text(result.data.forecast[2].maxC);  
-            
-            $('#pre-load-weather').addClass("fadeOut");
+      } else {
 
-        } else {
-
-          $('#weatherModal .modal-title').replaceWith("Error retrieving data");
-  
-        } 
-      },
-      error: function(jqXHR, textStatus, errorThrown){
         $('#weatherModal .modal-title').replaceWith("Error retrieving data");
+
       } 
-    });
+    },
+    error: function(jqXHR, textStatus, errorThrown){
+      $('#weatherModal .modal-title').replaceWith("Error retrieving data");
+    } 
+  });
+
+  $.ajax({
+    url: "php/getWeather.php",
+    type: "POST",
+    dataType: 'json',
+    data: {
+      capital: capital
+    },
+    success: function(result) {
+
+      if(result.status.code === 200){
+
+          $('#weatherModalLabel').html(result.data.location + ", " + result.data.country);       
+          $('#todayConditions').html(result.data.forecast[0].conditionText);
+          $('#todayIcon').attr("src", result.data.forecast[0].conditionIcon);
+          $('#todayMaxTemp').html(result.data.forecast[0].maxC);
+          $('#todayMinTemp').html(result.data.forecast[0].minC);         
+          $('#day1Date').text(Date.parse(result.data.forecast[1].date).toString("ddd dS"));
+          $('#day1Icon').attr("src", result.data.forecast[1].conditionIcon);
+          $('#day1MinTemp').text(result.data.forecast[1].minC);
+          $('#day1MaxTemp').text(result.data.forecast[1].maxC);        
+          $('#day2Date').text(Date.parse(result.data.forecast[2].date).toString("ddd dS"));
+          $('#day2Icon').attr("src", result.data.forecast[2].conditionIcon);
+          $('#day2MinTemp').text(result.data.forecast[2].minC);
+          $('#day2MaxTemp').text(result.data.forecast[2].maxC);  
+          
+          $('#pre-load-weather').addClass("fadeOut");
+
+      } else {
+
+        $('#weatherModal .modal-title').replaceWith("Error retrieving data");
+
+      } 
+    },
+    error: function(jqXHR, textStatus, errorThrown){
+      $('#weatherModal .modal-title').replaceWith("Error retrieving data");
+    } 
+  });
 })
 
 $('#weatherModal').on('hidden.bs.modal', function (e) {
@@ -339,8 +359,8 @@ async function myLocation() {
   map.locate({setView:'false'})
     .on('locationfound', async function(e){
       var countryCode = await getCountryCode(e.latitude,e.longitude);
-      getCountryInfo(countryCode.data.countryCode);
       setSelectedBorder(countryCode.data.countryCode);
+      getCities(countryCode.data.countryCode);
       $('#dropdown').val(countryCode.data.countryCode);
         })
        .on('locationerror', function(e){
@@ -358,16 +378,14 @@ var j = 0;
 var y = 0;
 var prevMarkers;
 var  prevMarkersAirport;
-function getCities (north, south, east, west, country) {
+
+function getCities (country) {
     $.ajax({
       url: "php/getCities.php",
       type: "POST",
       dataType: 'json',
       data: {
-        north: north,
-        south: south,
-        east: east,
-        west: west
+        country: country
       },
       success: function(result) {
 
@@ -489,6 +507,7 @@ function setSelectedBorder (selectedIso){
       var selectedData = result.data.features.find(item => item.properties.iso_a2 === selectedIso);
       var selectedLayer = L.geoJSON(selectedData); 
       borderGroup.addLayer(selectedLayer);
+      map.fitBounds(selectedLayer.getBounds())
       prevGroup = borderGroup;
       
       i++;
@@ -514,26 +533,27 @@ $('#newsModal').on('show.bs.modal', function(e) {
 
       if(result.status.code === 200){
 
-        $('#newsImg1').attr('src', result.data.news[0].image);
-        $('#newsImg2').attr('src', result.data.news[1].image);
-        $('#newsImg3').attr('src', result.data.news[2].image);
-        $('#newsImg4').attr('src', result.data.news[3].image);
-        $('#newsImg5').attr('src', result.data.news[4].image);
-        $('#newsTitle1').html(result.data.news[0].title);
-        $('#newsTitle1').attr('href', result.data.news[0].url);
-        $('#newsTitle2').html(result.data.news[1].title);
-        $('#newsTitle2').attr('href', result.data.news[1].url);
-        $('#newsTitle3').html(result.data.news[2].title);
-        $('#newsTitle3').attr('href', result.data.news[2].url);
-        $('#newsTitle4').html(result.data.news[3].title);
-        $('#newsTitle4').attr('href', result.data.news[3].url);
-        $('#newsTitle5').html(result.data.news[4].title);
-        $('#newsTitle5').attr('href', result.data.news[4].url);
-        $('#newsAuthor1').html(result.data.news[0].author);
-        $('#newsAuthor2').html(result.data.news[1].author);
-        $('#newsAuthor3').html(result.data.news[2].author);
-        $('#newsAuthor4').html(result.data.news[3].author);
-        $('#newsAuthor5').html(result.data.news[4].author);
+        result.data.news[0].image ? $('#newsImg1').attr('src', result.data.news[0].image) : $('#newsImg1').attr('src', '/project1PHPVer/img/No_image_available.svg.png') ;
+        result.data.news[1].image ? $('#newsImg2').attr('src', result.data.news[1].image) : $('#newsImg2').attr('src', '/project1PHPVer/img/No_image_available.svg.png') ;
+        result.data.news[2].image ? $('#newsImg3').attr('src', result.data.news[2].image) : $('#newsImg3').attr('src', '/project1PHPVer/img/No_image_available.svg.png') ;
+        result.data.news[3].image ? $('#newsImg4').attr('src', result.data.news[3].image) : $('#newsImg4').attr('src', '/project1PHPVer/img/No_image_available.svg.png') ;
+        result.data.news[4].image ? $('#newsImg5').attr('src', result.data.news[4].image) : $('#newsImg5').attr('src', '/project1PHPVer/img/No_image_available.svg.png') ;
+        result.data.news[0].title ? $('#newsTitle1').html(result.data.news[0].title) : $('#newsTitle1').html('No News Available');
+        result.data.news[0].url ? $('#newsTitle1').attr('href', result.data.news[0].url) : '';
+        result.data.news[1].title ?  $('#newsTitle2').html(result.data.news[1].title)  : $('#newsTitle2').html('No News Available');
+        result.data.news[1].url ?  $('#newsTitle2').attr('href', result.data.news[1].url) : '';
+        result.data.news[2].title ?  $('#newsTitle3').html(result.data.news[2].title)  : $('#newsTitle3').html('No News Available');
+        result.data.news[2].url ?  $('#newsTitle3').attr('href', result.data.news[2].url) : '';
+        result.data.news[3].title ?  $('#newsTitle4').html(result.data.news[3].title)  : $('#newsTitle4').html('No News Available');
+        result.data.news[3].url ?  $('#newsTitle4').attr('href', result.data.news[3].url) : '';
+        result.data.news[4].title ?  $('#newsTitle5').html(result.data.news[4].title)  : $('#newsTitle5').html('No News Available');
+        result.data.news[4].url ?  $('#newsTitle5').attr('href', result.data.news[4].url) : '';
+        result.data.news[0].author ? $('#newsAuthor1').html(result.data.news[0].author) : '' ;
+        result.data.news[1].author ? $('#newsAuthor2').html(result.data.news[1].author) : '' ;
+        result.data.news[2].author ? $('#newsAuthor3').html(result.data.news[2].author) : '' ;
+        result.data.news[3].author ? $('#newsAuthor4').html(result.data.news[3].author) : '' ;
+        result.data.news[4].author ? $('#newsAuthor5').html(result.data.news[4].author) : '' ;
+
         $('#pre-load-news').addClass("fadeOut");
         
 
@@ -579,7 +599,7 @@ $('#dropdown').change(function() {
   var selected = document.querySelector('#dropdown');
   var value = selected.value;
   setSelectedBorder(value);
-  getCountryInfo(value);
+  getCities(value);
 })
 
 var streets = L.tileLayer(

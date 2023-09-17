@@ -10,7 +10,8 @@
   $executionStartTime = microtime(true);
 
 
-  $url = 'http://api.geonames.org/countryInfoJSON?' . 'country=' . $_REQUEST['country'] . '&username=hughpullman';
+  $url = 'http://api.geonames.org/countryInfoJSON?country=' . $_REQUEST['country'] . '&username=hughpullman';
+
   $ch = curl_init();
 
   curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -33,7 +34,7 @@
 
   } else {
 
-    $countryInfo = json_decode($result,true);
+    $capital = json_decode($result,true);
 
     if (json_last_error() !== JSON_ERROR_NONE) {
 
@@ -46,30 +47,22 @@
     } else {
 
 
-      if (isset($countryInfo['error'])) {
+      if (isset($capital['error'])) {
 
-        $output['status']['code'] = $countryInfo['error']['code'];
+        $output['status']['code'] = $capital['error']['code'];
         $output['status']['name'] = "Failure - API";
-        $output['status']['description'] = $countryInfo['error']['message'];
+        $output['status']['description'] = $capital['error']['message'];
         $output['status']['seconds'] = number_format((microtime(true) - $executionStartTime), 3);
         $output['data'] = null;
 
       } else {
-
-        $finalResult['capital'] = $countryInfo['geonames'][0]['capital'];
-        $finalResult['continent'] = $countryInfo['geonames'][0]['continent'];
-        $finalResult['currency'] = $countryInfo['geonames'][0]['currencyCode'];
-        $finalResult['area'] = $countryInfo['geonames'][0]['areaInSqKm'];
-        $finalResult['population'] = $countryInfo['geonames'][0]['population'];
-        $finalResult['countryCode'] = $countryInfo['geonames'][0]['countryCode'];
-        
 
 
         $output['status']['code'] = 200;
         $output['status']['name'] = "success";
         $output['status']['description'] = "all ok";
         $output['status']['seconds'] = number_format((microtime(true) - $executionStartTime), 3);
-        $output['data'] = $finalResult;
+        $output['data'] = $capital['geonames'][0]['capital'];
 
       }
 
