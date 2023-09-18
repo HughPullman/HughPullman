@@ -143,6 +143,7 @@ $('#holidayModal').on('show.bs.modal', function(){
           );
           $('#holidayTable').append($tr);
         }
+        $('#holidayModalLabel').html("Public Holidays  " + Date.parse(result.data.holidays[0].date).toString('yyyy'))
         $('#pre-load-holiday').addClass("fadeOut");
       } else {
 
@@ -379,6 +380,7 @@ var y = 0;
 var prevMarkers;
 var  prevMarkersAirport;
 
+
 function getCities (country) {
     $.ajax({
       url: "php/getCities.php",
@@ -394,21 +396,14 @@ function getCities (country) {
             prevMarkers.clearLayers();
           }
 
-          var markers = L.markerClusterGroup({
-            polygonOptions: {
-              fillColor: '#fff',
-              color: '#000',
-              weight:2,
-              opacity:1,
-              fillOpacity:0.5
-            }}).addTo(map);
+          
          
           for(let i = 0 ; i < result.data.cities.length ; i++){
             var marker = L.marker([result.data.cities[i].lat, result.data.cities[i].lng], {icon: greenMarker}).bindTooltip("<div class='col text-center'><strong>" + result.data.cities[i].name + "</strong><br><i>(" + (result.data.cities[i].population).toLocaleString() + ")</i></div>", {direction: 'top', sticky: true});
-            markers.addLayer(marker);
+            cities.addLayer(marker);
           }
           
-          prevMarkers = markers;
+          prevMarkers = cities;
           j++;
         }
       },
@@ -431,21 +426,14 @@ function getCities (country) {
             prevMarkersAirport.clearLayers();
           }
 
-          var markersAirport = L.markerClusterGroup({
-            polygonOptions: {
-              fillColor: '#fff',
-              color: '#000',
-              weight:2,
-              opacity:1,
-              fillOpacity:0.5
-            }}).addTo(map);
+          
          
           for(let i = 0 ; i < result.data.airports.length ; i++){
             var markerAirport = L.marker([result.data.airports[i].lat, result.data.airports[i].lng], {icon: redMarker}).bindTooltip(result.data.airports[i].name, {direction: 'top', sticky: true});
-            markersAirport.addLayer(markerAirport);
+            airports.addLayer(markerAirport);
           }
           
-          prevMarkersAirport = markersAirport;
+          prevMarkersAirport = airports;
           y++;
         }
       },
@@ -505,7 +493,13 @@ function setSelectedBorder (selectedIso){
       var borderGroup = new L.LayerGroup();
       borderGroup.addTo(map);
       var selectedData = result.data.features.find(item => item.properties.iso_a2 === selectedIso);
-      var selectedLayer = L.geoJSON(selectedData); 
+      var selectedLayer = L.geoJSON(selectedData, {
+        fillColor: '#fff',
+        color: '#000',
+        weight:2,
+        opacity:1,
+        fillOpacity:0.2
+      }); 
       borderGroup.addLayer(selectedLayer);
       map.fitBounds(selectedLayer.getBounds())
       prevGroup = borderGroup;
@@ -623,7 +617,6 @@ var basemaps = {
 };
 
 
-
 var map = L.map("map", {
   layers: [streets]
 });
@@ -631,8 +624,6 @@ var map = L.map("map", {
 window.onload = () => {
    getCountries();
 };
-
-var layerControl = L.control.layers(basemaps).addTo(map);
 
 var myIcon = L.icon({
   iconUrl: 'img/personIcon.png',
@@ -653,6 +644,31 @@ var redMarker = L.ExtraMarkers.icon({
   shape: 'square',
   prefix: 'fa'
 })
+
+var cities = L.markerClusterGroup({
+  polygonOptions: {
+  fillColor: '#fff',
+  color: '#000',
+  weight:2,
+  opacity:1,
+  fillOpacity:0.5
+}}).addTo(map);
+
+var airports = L.markerClusterGroup({
+  polygonOptions: {
+  fillColor: '#fff',
+  color: '#000',
+  weight:2,
+  opacity:1,
+  fillOpacity:0.5
+}}).addTo(map);
+
+var overlays = {
+  "Airports" : airports,
+  "Cities" : cities
+}
+
+var layerControl = L.control.layers(basemaps, overlays).addTo(map);
 
 L.easyButton("fa-circle-info fa-xl", function (btn, map) {
   
