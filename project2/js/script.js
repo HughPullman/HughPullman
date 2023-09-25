@@ -336,8 +336,6 @@ $('#deleteDepartmentButton').on("click", async function() {
     }
   });
   var selectedDepartment = $('#deleteDepartment option:selected').text();
-  console.log(usedDepartments);
-  console.log(selectedDepartment);
 
   if(usedDepartments.includes(selectedDepartment)){
     alert('This department has personnel assigned to it! Please change this before deleting.');
@@ -376,10 +374,10 @@ $('#deleteLocationModal').on('show.bs.modal', function(e){
   $('#deleteLocation').val(selected);
 })
 
-$('#deleteLocationButton').on("click", function() {
+$('#deleteLocationButton').on("click", async function() {
   var usedLocations = [];
 
-  $.ajax({
+  await $.ajax({
     url: 'php/getAll.php',
     type: 'GET',
     dataType: 'json',
@@ -518,7 +516,7 @@ $("#addLocationForm").on("submit", function (e) {
     type: "POST",
     dataType: "json",
     data: {
-      name: $("#addLocationLocation option:selected").val()
+      name: $("#addLocationLocation").val()
     },
     success: function (result) {
       var resultCode = result.status.code;
