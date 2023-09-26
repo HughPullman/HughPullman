@@ -31,7 +31,7 @@
                             <button id="filterBtn" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#filterModal">
                                 <i class="fa-solid fa-filter fa-fw"></i>
                             </button>          
-                            <button id="addBtn" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">
+                            <button id="addBtn" type="button" class="btn btn-primary" >
                                 <i class="fa-solid fa-plus fa-fw"></i>
                             </button>
 
@@ -142,6 +142,88 @@
             
           </div>
 
+          <div id="editDepartmentModal" class="modal fade" tabindex="-1" data-bs-backdrop="false" data-bs-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            
+            <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+                 
+              <div class="modal-content shadow"> 
+                
+                <div class="modal-header bg-primary bg-gradient text-white">
+                  <h5 class="modal-title">Edit Department</h5>
+                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+          
+                <div class="modal-body">
+                    
+                  <form id="editDepartmentForm">
+          
+                    <input type="hidden" id="editDepartmentID">
+          
+                    <div class="form-floating mb-3">
+                      <input type="text" class="form-control" id="editDepartmentName" placeholder="Department" required>
+                      <label for="editDepartmentName">Department</label>
+                    </div> 
+          
+                    <div class="form-floating">
+                      <select class="form-select" id="editDepartmentLocation" placeholder="Location">
+                      </select>
+                      <label for="editDepartmentLocation">Location</label>
+                    </div>  
+          
+                  </form>
+          
+                </div>
+          
+                <div class="modal-footer">
+                  <button type="submit" form="editDepartmentForm" class="btn btn-outline-primary btn-sm myBtn">SAVE</button>
+                  <button type="button" class="btn btn-outline-primary btn-sm myBtn" data-bs-dismiss="modal">CANCEL</button>
+                </div>
+           
+              </div>
+              
+            </div>
+            
+          </div>
+
+          <div id="editLocationModal" class="modal fade" tabindex="-1" data-bs-backdrop="false" data-bs-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            
+            <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+                 
+              <div class="modal-content shadow"> 
+                
+                <div class="modal-header bg-primary bg-gradient text-white">
+                  <h5 class="modal-title">Edit Location</h5>
+                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+          
+                <div class="modal-body">
+                    
+                  <form id="editLocationForm">
+          
+                    <input type="hidden" id="editLocationID">
+          
+                    <div class="form-floating mb-3">
+                      <input type="text" class="form-control" id="editLocationName" placeholder="Location" required>
+                      <label for="editLocationName">Location</label>
+                    </div> 
+          
+          
+                  </form>
+          
+                </div>
+          
+                <div class="modal-footer">
+                  <button type="submit" form="editLocationForm" class="btn btn-outline-primary btn-sm myBtn">SAVE</button>
+                  <button type="button" class="btn btn-outline-primary btn-sm myBtn" data-bs-dismiss="modal">CANCEL</button>
+                </div>
+           
+              </div>
+              
+            </div>
+            
+          </div>
+
+
           <div id="deletePersonnelModal" class="modal fade" tabindex="-1" data-bs-backdrop="false" data-bs-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
             
             <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
@@ -182,8 +264,9 @@
                 </div>
           
                 <div class="modal-body">
-                  <select class="form-select" id="deleteDepartment" placeholder="Department">
-                  </select>          
+                  <input type="hidden" id="deleteDepartmentID">
+                  <p>Are you sure?</p><br>
+                  <p id="areYouSureDeptName"></p>         
                 </div>
           
                 <div class="modal-footer">
@@ -195,6 +278,34 @@
               
             </div>
             
+          </div>
+
+          <div id="cantDeleteDepartmentModal" class="modal fade" tabindex="-1" data-bs-backdrop="false" data-bs-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+        
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                
+              <div class="modal-content shadow">
+        
+                <div class="modal-header bg-primary bg-gradient text-white">
+                  <h5 class="modal-title">Cannot remove department ...</h5>
+                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+        
+                <div class="modal-body">
+        
+                  You cannot remove the entry for <span id="cantDeleteDeptName" class="fw-bold"></span> because it has <span id="pc" class="fw-bold"></span> employees assigned to it.
+        
+                </div>
+        
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">OK</button>
+                </div>
+        
+              </div>
+        
+            </div>
+        
           </div>
 
           <div id="deleteLocationModal" class="modal fade" tabindex="-1" data-bs-backdrop="false" data-bs-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -209,8 +320,9 @@
                 </div>
           
                 <div class="modal-body">
-                  <select class="form-select" id="deleteLocation" placeholder="Department">
-                  </select>          
+                  <input type="hidden" id="deleteLocationID">
+                  <p>Are you sure?</p><br>
+                  <p id="areYouSureLocaName"></p>    
                 </div>
           
                 <div class="modal-footer">
@@ -224,31 +336,32 @@
             
           </div>
 
-          <div id="addModal" class="modal fade" tabindex="-1" data-bs-backdrop="false" data-bs-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            
-            <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
-                 
-              <div class="modal-content shadow"> 
+          <div id="cantDeleteLocationModal" class="modal fade" tabindex="-1" data-bs-backdrop="false" data-bs-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+        
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                 
+              <div class="modal-content shadow">
+        
                 <div class="modal-header bg-primary bg-gradient text-white">
-                  <h5 class="modal-title">Add Data</h5>
+                  <h5 class="modal-title">Cannot remove location ...</h5>
                   <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-          
-                <div class="modal-body addModalBody">
-                  <button type="button" class="btn btn-primary btn-sm addBtns" data-bs-toggle="modal" data-bs-target="#addPersonnelModal">Add Personnel</button>
-                  <button type="button" class="btn btn-primary btn-sm addBtns" data-bs-toggle="modal" data-bs-target="#addDepartmentModal">Add Department</button>
-                  <button type="button" class="btn btn-primary btn-sm addBtns" data-bs-toggle="modal" data-bs-target="#addLocationModal">Add Location</button>
+        
+                <div class="modal-body">
+        
+                  You cannot remove the entry for <span id="cantDeleteLocaName" class="fw-bold"></span> because it has <span id="pcL" class="fw-bold"></span> departments assigned to it.
+        
                 </div>
-          
+        
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-outline-primary btn-sm myBtn" data-bs-dismiss="modal">CANCEL</button>
+                  <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">OK</button>
                 </div>
-           
+        
               </div>
-              
+        
             </div>
-            
+        
           </div>
 
 
@@ -402,14 +515,14 @@
                   
                     <div class="form-floating mb-3">
                       <select class="form-select" id="departmentFilter" placeholder="Department">
-                        <option value=""></option>
+                        
                       </select>
                       <label for="departmentFilter">Department</label>
                     </div>
 
                     <div class="form-floating mb-3">
                       <select class="form-select" id="locationFilter" placeholder="Department">
-                        <option value=""></option>
+                        
                       </select>
                       <label for="locationFilter">Location</label>
                     </div>
